@@ -1,0 +1,70 @@
+{
+  "name": "zazzle-frontend",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "axios": "^0.19.1",
+    "node-sass": "^4.13.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-scripts": "3.3.0",
+    "rxjs": "^6.5.4",
+    "styled-components": "^4.4.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --watchAll=false --coverage",
+    "test.watch": "react-scripts test",
+    "8ask3js0d9d8s0d83n3l23__eject": "react-scripts eject",
+    "storybook": "start-storybook -p 9009 -s public",
+    "build-storybook": "build-storybook -s public",
+    "lint": "eslint 'src/**/*.{js,ts,tsx}' --quiet --fix"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm run lint && npm run test && npm run build",
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "devDependencies": {
+    "@storybook/addon-actions": "^5.2.8",
+    "@storybook/addon-links": "^5.2.8",
+    "@storybook/addons": "^5.2.8",
+    "@storybook/react": "^5.2.8",
+    "@types/axios": "^0.14.0",
+    "@types/jest": "^24.0.0",
+    "@types/node": "^12.0.0",
+    "@types/react": "^16.9.17",
+    "@types/react-dom": "^16.9.4",
+    "@types/styled-components": "^4.4.2",
+    "@typescript-eslint/eslint-plugin": "^2.15.0",
+    "@typescript-eslint/parser": "^2.15.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.9.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "eslint-plugin-react": "^7.17.0",
+    "husky": "^4.0.3",
+    "prettier": "^1.19.1",
+    "pretty-quick": "^2.0.1",
+    "typescript": "~3.7.2"
+  }
+}
