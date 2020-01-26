@@ -35,12 +35,12 @@ workflows:
   build-deploy:
     jobs:
       - build:
-          filter: 
-            barnches:
+          filters: 
+            branches:
               only: master
       - deploy:
           requires:
             - build
-          filter:
+          filters:
             branches:
                 only: master
