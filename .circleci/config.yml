@@ -17,7 +17,7 @@ jobs:
       - run: npm run test
       - run: npm run build
       - save_cache:
-          key: build-cache-{{ .Branch }}-{{ .BuildNum }}
+          key: build-cache-{{ .Branch }}
           paths:
             - build
   deploy:
@@ -25,8 +25,10 @@ jobs:
     executor: aws-cli/default
     steps:
       - aws-cli/setup
+      - checkout
       - restore_cache:
-          keys: build-cache-{{ .Branch }}-{{ .BuildNum }}
+          keys: 
+            - build-cache-{{ .Branch }}
       - run:
           name: AWS deploy
           command: |
