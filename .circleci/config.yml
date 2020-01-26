@@ -20,6 +20,7 @@ jobs:
     working_directory: ~/zazzle
     executor: aws-cli/default
     steps:
+      - aws-cli/setup
       - run:
           name: AWS deploy
           command: aws --region us-east-2 s3 sync build s3://zazzle.yetilabs.ca --delete
@@ -39,6 +40,7 @@ workflows:
             branches:
               only: master
       - deploy:
+          context: aws
           requires:
             - build
           filters:
