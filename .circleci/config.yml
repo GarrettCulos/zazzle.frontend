@@ -21,6 +21,7 @@ jobs:
     executor: aws-cli/default
     steps:
       - aws-cli/setup
+          aws-region: us-east-2
       - run:
           name: AWS deploy
           command: awscli --region us-east-2 s3 sync build s3://zazzle.yetilabs.ca --delete
