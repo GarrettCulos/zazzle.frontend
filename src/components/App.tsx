@@ -16,8 +16,8 @@ const Avatar = styled.img`
 const App: React.FC = () => {
   return (
     <AppContainer>
-      <Header subTitle={'Projects'}></Header>
-      Projects stuff here
+      <Header />
+      z
     </AppContainer>
   );
 };
