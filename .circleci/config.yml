@@ -20,7 +20,7 @@ jobs:
     working_directory: ~/zazzle
     executor: aws-cli/default
     steps:
-      - aws-cli/setup
+      - aws-cli/setup:
           aws-region: us-east-2
       - run:
           name: AWS deploy
