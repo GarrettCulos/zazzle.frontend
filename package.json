@@ -16,7 +16,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "CI=true react-scripts build",
     "test": "react-scripts test --watchAll=false --coverage",
     "test.watch": "react-scripts test",
     "8ask3js0d9d8s0d83n3l23__eject": "react-scripts eject",

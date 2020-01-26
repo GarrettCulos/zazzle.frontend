@@ -8,11 +8,6 @@ const AppContainer = styled.div`
   padding: 1rem;
 `;
 
-const Avatar = styled.img`
-  width: 24px;
-  height: 24px;
-`;
-
 const App: React.FC = () => {
   return (
     <AppContainer>
