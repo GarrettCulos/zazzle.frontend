@@ -23,7 +23,9 @@ jobs:
       - aws-cli/setup
       - run:
           name: AWS deploy
-          command: aws --region us-east-2 s3 sync build s3://zazzle.yetilabs.ca --delete
+          command: |
+              ls -al
+              aws --region us-east-2 s3 sync build s3://zazzle.yetilabs.ca --delete
       - run:
           name: AWS invalidate CF distribution
           command: |
