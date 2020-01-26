@@ -23,13 +23,13 @@ jobs:
       - aws-cli/setup
       - run:
           name: AWS deploy
-          command: awscli --region us-east-2 s3 sync build s3://zazzle.yetilabs.ca --delete
+          command: aws --region us-east-2 s3 sync build s3://zazzle.yetilabs.ca --delete
       - run:
           name: AWS invalidate CF distribution
           command: |
-              awscli configure set preview.cloudfront true 
-              awscli configure set preview.create-invalidation true
-              awscli cloudfront create-invalidation --distribution-id $CF_DISTRIBUTION_ID --paths "/*"
+              aws configure set preview.cloudfront true 
+              aws configure set preview.create-invalidation true
+              aws cloudfront create-invalidation --distribution-id $CF_DISTRIBUTION_ID --paths "/*"
 
 workflows:
   version: 2
