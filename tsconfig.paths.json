@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "@types": ["types"],
+      "@types/*": ["types/*"],
+      "@types/**/*": ["types/**/*"],
+      "@hooks": ["hooks"],
+      "@hooks/*": ["hooks/*"],
+      "@hooks/**/*": ["hooks/**/*"],
+      "@apollo": ["apollo"],
+      "@apollo/*": ["apollo/*"],
+      "@apollo/**/*": ["apollo/**/*"],
+      "@environment": ["environment"],
+      "@environment/*": ["environment/*"],
+      "@environment/**/*": ["environment/**/*"],
+      "@store": ["store"],
+      "@store/*": ["store/*"],
+      "@store/**/*": ["store/**/*"],
+      "@services": ["services"],
+      "@services/*": ["services/*"],
+      "@services/**/*": ["services/**/*"]
+    }
+  }
+}

@@ -1,19 +1,29 @@
 import React from 'react';
-import styled from 'styled-components';
-import { Header } from './Header';
+import styled, { ThemeProvider } from 'styled-components';
+import { connect, ConnectedProps } from 'react-redux';
+import { IconContext } from 'react-icons';
+import { SideMenu } from './menu';
+// import { MenuBar } from './atomic/app-bar'
 
 const AppContainer = styled.div`
   height: 100%;
   width: 100%;
-  padding: 1rem;
 `;
+
+const theme = {
+  isMobile: false
+};
 
 const App: React.FC = () => {
   return (
-    <AppContainer>
-      <Header />
-      z
-    </AppContainer>
+    <ThemeProvider theme={theme}>
+      <IconContext.Provider value={{ style: { verticalAlign: 'middle', fontSize: '24px' } }}>
+        <AppContainer>
+          <SideMenu />
+          {/* <MenuBar /> */}
+        </AppContainer>
+      </IconContext.Provider>
+    </ThemeProvider>
   );
 };
 

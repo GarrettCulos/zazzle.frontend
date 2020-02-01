@@ -3,15 +3,13 @@
   "version": "0.0.1",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
     "apollo-client": "^2.6.8",
     "axios": "^0.19.1",
     "graphql-tag": "^2.10.1",
     "node-sass": "^4.13.0",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "react-icons": "^3.9.0",
     "react-redux": "^7.1.3",
     "react-scripts": "3.3.0",
     "redux": "^4.0.5",
@@ -25,8 +23,8 @@
     "test": "react-scripts test --watchAll=false --coverage",
     "test.watch": "react-scripts test",
     "8ask3js0d9d8s0d83n3l23__eject": "react-scripts eject",
-    "storybook": "start-storybook -p 9009 -s public",
-    "build-storybook": "build-storybook -s public",
+    "storybook": "start-storybook -p 9009",
+    "build-storybook": "build-storybook",
     "lint": "eslint 'src/**/*.{js,ts,tsx}' --quiet --fix"
   },
   "eslintConfig": {
@@ -51,10 +49,15 @@
     }
   },
   "devDependencies": {
-    "@storybook/addon-actions": "^5.2.8",
-    "@storybook/addon-links": "^5.2.8",
-    "@storybook/addons": "^5.2.8",
-    "@storybook/react": "^5.2.8",
+    "@storybook/addon-actions": "^5.3.9",
+    "@storybook/addon-docs": "^5.3.9",
+    "@storybook/addon-links": "^5.3.9",
+    "@storybook/addons": "^5.3.9",
+    "@storybook/preset-create-react-app": "^1.5.2",
+    "@storybook/react": "^5.3.9",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
     "@types/axios": "^0.14.0",
     "@types/jest": "^24.0.0",
     "@types/node": "^12.0.0",
@@ -71,6 +74,7 @@
     "husky": "^4.0.3",
     "prettier": "^1.19.1",
     "pretty-quick": "^2.0.1",
+    "storybook": "^5.3.9",
     "typescript": "~3.7.2"
   }
 }
