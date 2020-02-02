@@ -2,24 +2,18 @@
   "compilerOptions": {
     "baseUrl": "./src",
     "paths": {
-      "@types": ["types"],
-      "@types/*": ["types/*"],
-      "@types/**/*": ["types/**/*"],
-      "@hooks": ["hooks"],
+      "@appTypes/*": ["types/*"],
+      "@appTypes": ["types"],
       "@hooks/*": ["hooks/*"],
-      "@hooks/**/*": ["hooks/**/*"],
-      "@apollo": ["apollo"],
-      "@apollo/*": ["apollo/*"],
-      "@apollo/**/*": ["apollo/**/*"],
-      "@environment": ["environment"],
+      "@hooks": ["hooks"],
+      "@gql/*": ["apollo/*"],
+      "@gql": ["apollo"],
       "@environment/*": ["environment/*"],
-      "@environment/**/*": ["environment/**/*"],
-      "@store": ["store"],
+      "@environment": ["environment"],
       "@store/*": ["store/*"],
-      "@store/**/*": ["store/**/*"],
-      "@services": ["services"],
+      "@store": ["store"],
       "@services/*": ["services/*"],
-      "@services/**/*": ["services/**/*"]
+      "@services": ["services"]
     }
   }
 }

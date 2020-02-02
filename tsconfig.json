@@ -21,10 +21,9 @@
     "noEmit": true,
     "jsx": "react",
     "typeRoots": [
-      "./src/types",
       "./node_modules/@types"
     ],
-    "baseUrl": "./"
+    "baseUrl": "./src"
   },
   "include": [
     "src/**/*"

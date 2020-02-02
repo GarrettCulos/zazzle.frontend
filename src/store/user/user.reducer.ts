@@ -1,19 +1,22 @@
-import { Action } from 'redux';
-import { User, UserErrors } from '@types/user';
-import { SET_USER, SetUser } from './user.actions';
+import { AnyAction } from 'redux';
+import { User } from '@appTypes/user';
+import { SET_USER } from './user.types';
 
 export interface UserState {
-  user: User | UserErrors | undefined;
+  user: User | undefined;
 }
 
 const initialUserState: UserState = {
   user: undefined
 };
 
-export const user = (state: UserState = initialUserState, action: Action) => {
+export const user = (state: UserState = initialUserState, action: AnyAction) => {
   switch (action.type) {
     case SET_USER: {
-      return (action as SetUser).user;
+      return {
+        ...state,
+        user: action.user
+      };
     }
     default:
       return state;

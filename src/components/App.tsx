@@ -1,6 +1,5 @@
 import React from 'react';
 import styled, { ThemeProvider } from 'styled-components';
-import { connect, ConnectedProps } from 'react-redux';
 import { IconContext } from 'react-icons';
 import { SideMenu } from './menu';
 // import { MenuBar } from './atomic/app-bar'

@@ -1,9 +1,8 @@
-import { AnyAction } from "redux";
-import { User, UserErrors } from '../../types/user';
+// import { createAction } from 'redux-toolkit';
+import { User } from '@appTypes/user';
+import { SET_USER } from './user.types';
 
-export const SET_USER = '[ ui ] set ui theme';
-
-export class SetUser implements AnyAction {
-    type = SET_USER
-    constructor(public user: User | UserErrors | undefined){}
-}
+export const setUser = (user: User | undefined) => ({
+  type: SET_USER,
+  user
+});

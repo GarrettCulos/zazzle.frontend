@@ -1,32 +1,29 @@
-import { AnyAction } from 'redux';
+import { SET_THEME, ADD_LOADING, REMOVE_LOADING, ADD_ERROR, REMOVE_ERROR } from './ui.types';
 
-export const SET_THEME = '[ ui ] set ui theme';
-export const ADD_LOADING = '[ ui ] add loading';
-export const REMOVE_LOADING = '[ ui ] remove loading';
-export const ADD_ERROR = '[ ui ] add error';
-export const REMOVE_ERROR = '[ ui ] remove error';
+export const setTheme = (theme: 'dark' | 'light') => ({
+  type: SET_THEME,
+  theme
+});
 
-export class SetTheme implements AnyAction {
-  type = SET_THEME;
-  constructor(public theme: 'dark' | 'light') {}
-}
+export const addLoading = (id: string, loadType: string, data: any) => ({
+  type: ADD_LOADING,
+  id,
+  loadType,
+  data
+});
 
-export class AddLoading {
-  type = ADD_LOADING;
-  constructor(public id: string, public loadType: string, public data: any) {}
-}
+export const removeLoading = (id: string) => ({
+  type: REMOVE_LOADING,
+  id
+});
 
-export class RemoveLoading {
-  type = REMOVE_LOADING;
-  constructor(public id: string) {}
-}
+export const addError = (errorType: string, data: any) => ({
+  type: ADD_ERROR,
+  errorType,
+  data
+});
 
-export class AddError {
-  type = ADD_ERROR;
-  constructor(public errorType: string, public data: any) {}
-}
-
-export class RemoveError {
-  type = REMOVE_ERROR;
-  constructor(public id: string) {}
-}
+export const removeError = (id: string) => ({
+  type: REMOVE_ERROR,
+  id
+});

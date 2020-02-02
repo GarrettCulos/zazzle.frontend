@@ -1,15 +1,15 @@
 import React from 'react';
 import { MdSettings } from 'react-icons/md';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { ConnectedProps, ReduxConnector } from '@store/connector';
 
-// import IconButton from './atomic/icon-button';
-const connector = new ReduxConnector(state => ({
-  user: state.user.user
-})).connector;
-type PropFromRedux = ConnectedProps<typeof connector>;
+import { GoogleLoginComponent } from './menu/google-login';
+import { FacebookLoginComponent } from './menu/facebook-login';
 
-const SideMenuContainer: any = styled.div`
+import { getUser } from '@store/user/user.selectors';
+import { showLoginSection } from '@store/ui/ui.selectors';
+
+const SideMenuContainer = styled.div`
   position: absolute;
   top: 0;
   left: 0;
@@ -34,35 +34,36 @@ const SideMenuRow = styled.div`
   width: 100%;
 `;
 
-SideMenuContainer.Title = styled.div`
-  font-size: 1.2rem;
-  font-weight: 400;
-`;
-
 const SideMenuSpacer = styled.div`
   flex: 1;
 `;
-// const TextLink = styled.a`
-//   margin: 0 10px;
-// `
 
-interface HeaderInterface {
-  subTitle?: string;
-}
+export const SideMenu: React.FC = () => {
+  /**
+   * get user data
+   */
+  const user = useSelector(getUser);
 
-const _SideMenu: React.FC<HeaderInterface & PropFromRedux> = (props: HeaderInterface & PropFromRedux) => {
-  console.log(props);
+  /**
+   * selectors
+   */
+  const showLogin = useSelector(showLoginSection);
+
   return (
     <SideMenuContainer>
-      {props.user && (
+      {user && (
         <SideMenuRow>
           Zazzle
           <MdSettings />
         </SideMenuRow>
       )}
+      {showLogin && (
+        <>
+          <GoogleLoginComponent />
+          <FacebookLoginComponent />
+        </>
+      )}
       <SideMenuSpacer />
     </SideMenuContainer>
   );
 };
-
-export const SideMenu = connector(_SideMenu);
