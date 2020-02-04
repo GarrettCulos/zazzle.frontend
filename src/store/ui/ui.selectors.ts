@@ -32,3 +32,5 @@ export const showLoginSection = createSelector(
     return !user && !jwtToken;
   }
 );
+
+export const getSideNavState = (state: AppState) => state.ui.sideNavState;

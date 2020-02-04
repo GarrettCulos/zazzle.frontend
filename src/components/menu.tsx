@@ -1,44 +1,30 @@
-import React from 'react';
-import { MdSettings } from 'react-icons/md';
-import { useSelector } from 'react-redux';
-import styled from 'styled-components';
+import React, { useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { MdSettings, MdFolder, MdStarBorder, MdLocalActivity } from 'react-icons/md';
+import { IoIosFlask as TempLogo } from 'react-icons/io';
 
 import { GoogleLoginComponent } from './menu/google-login';
 import { FacebookLoginComponent } from './menu/facebook-login';
 
 import { getUser } from '@store/user/user.selectors';
-import { showLoginSection } from '@store/ui/ui.selectors';
+import { showLoginSection, getSideNavState } from '@store/ui/ui.selectors';
+import { setSideNavState } from '@store/ui/ui.actions';
 
-const SideMenuContainer = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  height: 100%;
-  width: 260px;
-
-  background-color: var(--color-gray);
-  color: rgba(0, 0, 0, 0.8);
-
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  color: rgba(255, 255, 255, 0.85);
-`;
-const SideMenuRow = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  box-sizing: border-box;
-  padding: 1rem;
-  width: 100%;
-`;
-
-const SideMenuSpacer = styled.div`
-  flex: 1;
-`;
+import { AppName } from './atomic/app-name';
+import { SideNavToggle } from './atomic/side-nav-toggle';
+import {
+  SideMenuContainer,
+  SideMenuHeader,
+  SideMenuSpacer,
+  MenuDivider,
+  LoginComponent,
+  SideMenuRow,
+  SmallContinueWith
+} from './menu/menu-styles';
 
 export const SideMenu: React.FC = () => {
+  const dispatch = useDispatch();
   /**
    * get user data
    */
@@ -49,19 +35,51 @@ export const SideMenu: React.FC = () => {
    */
   const showLogin = useSelector(showLoginSection);
 
+  /**
+   * sidenav state && toggle
+   */
+  const sideNavState = useSelector(getSideNavState);
+  const isClosed = sideNavState === 'closed';
+  const toggleSideNav = useCallback(() => {
+    if (sideNavState !== 'open') {
+      dispatch(setSideNavState('open'));
+    } else {
+      dispatch(setSideNavState('closed'));
+    }
+  }, [dispatch, sideNavState]);
+  console.log(sideNavState);
   return (
-    <SideMenuContainer>
-      {user && (
-        <SideMenuRow>
-          Zazzle
-          <MdSettings />
-        </SideMenuRow>
-      )}
+    <SideMenuContainer sideNavState={sideNavState}>
+      <SideMenuHeader>
+        <SideNavToggle sideNavState={sideNavState} onClick={toggleSideNav} />
+        <TempLogo style={{ color: 'var(--color-primary__dark)' }} />
+        {!isClosed && <AppName />}
+        <SideMenuSpacer />
+        {user && <MdSettings />}
+      </SideMenuHeader>
+      <MenuDivider />
       {showLogin && (
         <>
-          <GoogleLoginComponent />
-          <FacebookLoginComponent />
+          <LoginComponent>
+            {isClosed && <SmallContinueWith>Continue with</SmallContinueWith>}
+            <GoogleLoginComponent tinyButton={isClosed} />
+            <FacebookLoginComponent tinyButton={isClosed} />
+          </LoginComponent>
+          <MenuDivider />
         </>
+      )}
+      <SideMenuRow active={true} vertical={isClosed}>
+        <MdFolder /> <span>Projects</span>
+      </SideMenuRow>
+      {user && (
+        <SideMenuRow vertical={isClosed}>
+          <MdStarBorder /> <span>Favorites</span>
+        </SideMenuRow>
+      )}
+      {user && (
+        <SideMenuRow vertical={isClosed}>
+          <MdLocalActivity /> <span>My Projects</span>
+        </SideMenuRow>
       )}
       <SideMenuSpacer />
     </SideMenuContainer>

@@ -14,12 +14,14 @@ export interface UILoading {
 }
 export interface UIState {
   theme: 'dark' | 'light';
+  sideNavState: 'open' | 'closed' | 'extened';
   error: { [uuid: string]: UIError };
   loading: { [uuid: string]: UILoading };
 }
 
 const initialUIState: UIState = {
   theme: 'light',
+  sideNavState: 'open',
   error: {},
   loading: {}
 };
@@ -47,7 +49,8 @@ export const ui = (state: UIState = initialUIState, action: AnyAction) => {
       let removedLoading = { ...state.loading };
       delete removedLoading[action.id];
       return { ...state, loading: { ...removedLoading } };
-
+    case UITypes.SET_SIDENAV_STATE:
+      return { ...state, sideNavState: action.sideNavState };
     default:
       return state;
   }
