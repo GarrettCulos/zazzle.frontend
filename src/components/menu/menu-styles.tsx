@@ -34,7 +34,6 @@ export const SideMenuContainer = styled.div<SideMenuInterface>`
   flex-direction: column;
   align-items: flex-start;
   color: rgba(255, 255, 255, 0.85);
-  transition: width 0.08s ease-in;
   overflow-x: hidden;
   overflow-y: auto;
 `;

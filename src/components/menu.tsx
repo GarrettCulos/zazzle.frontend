@@ -47,7 +47,7 @@ export const SideMenu: React.FC = () => {
       dispatch(setSideNavState('closed'));
     }
   }, [dispatch, sideNavState]);
-  console.log(sideNavState);
+
   return (
     <SideMenuContainer sideNavState={sideNavState}>
       <SideMenuHeader>

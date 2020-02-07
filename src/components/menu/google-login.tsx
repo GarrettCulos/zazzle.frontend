@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { GoogleLogin } from 'react-google-login';
 import { FaGoogle } from 'react-icons/fa';
+import { useMutation } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+
 import { LoginButtonInterface } from './social-login';
 import { environment } from '@environment/environment';
 import { setAuth } from '@store/auth/auth.actions';
@@ -13,28 +16,49 @@ import { LoginButton } from './login-button-styled';
 const GoogleLoginButton = styled(LoginButton)`
   /* color: var(--facebook-blue); */
 `;
+
+const EXCHANGE_GOOGLE_TOKEN = gql`
+  mutation exchangeGoogle($email: String!, $idToken: String!) {
+    exchangeGoogle(auth: { email: $email, idToken: $idToken }) {
+      token
+      expiresIn
+      user {
+        emailAddress
+      }
+    }
+  }
+`;
+
 export const GoogleLoginComponent: React.FC<LoginButtonInterface> = ({ tinyButton }: LoginButtonInterface) => {
   const dispatch = useDispatch();
-
+  const [exchangeGoogleToken] = useMutation<any, any>(EXCHANGE_GOOGLE_TOKEN);
   const responseGoogle = useCallback(
-    response => {
-      if (response) {
-        dispatch(setAuth({ token: response.accessToken, provider: 'google', responseData: response }));
-        dispatch(
-          setUser({
-            userName: response.profileObj.name,
-            firstName: response.profileObj.givenName,
-            lastName: response.profileObj.familyName,
-            avatar: {
-              width: 50,
-              height: 50,
-              url: response.profileObj.imageUrl
-            }
-          })
-        );
+    async response => {
+      try {
+        if (response) {
+          const data: any = await exchangeGoogleToken({
+            variables: { email: response.profileObj.email, idToken: response.tokenId }
+          });
+          const { token } = data.data.exchangeGoogle;
+          dispatch(setAuth({ token, provider: 'google', responseData: response }));
+          dispatch(
+            setUser({
+              userName: response.profileObj.name,
+              firstName: response.profileObj.givenName,
+              lastName: response.profileObj.familyName,
+              avatar: {
+                width: 50,
+                height: 50,
+                url: response.profileObj.imageUrl
+              }
+            })
+          );
+        }
+      } catch (error) {
+        console.error(error);
       }
     },
-    [dispatch]
+    [dispatch, exchangeGoogleToken]
   );
   return (
     <GoogleLogin
