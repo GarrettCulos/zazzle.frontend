@@ -32,7 +32,7 @@ jobs:
       - run:
           name: AWS deploy
           command: |
-            aws --region us-east-2 s3 sync build s3://zazzle.yetilabs.ca --delete
+            aws --region us-west-2 s3 sync build s3://zazzle.yetilabs.ca --delete
       - run:
           name: AWS invalidate CF distribution
           command: |
