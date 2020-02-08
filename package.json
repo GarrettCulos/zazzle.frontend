@@ -86,5 +86,15 @@
     "react-app-rewired": "^2.1.5",
     "storybook": "^5.3.9",
     "typescript": "~3.7.2"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "@appTypes(.*)$": "<rootDir>/src/types/$1",
+      "@hooks(.*)$": "<rootDir>/src/hooks/$1",
+      "@gql(.*)$": "<rootDir>/src/apollo/$1",
+      "@environment(.*)$": "<rootDir>/src/environment/$1",
+      "@store(.*)$": "<rootDir>/src/store/$1",
+      "@services(.*)$": "<rootDir>/src/services/$1"
+    }
   }
 }
