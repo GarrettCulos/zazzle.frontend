@@ -6,8 +6,8 @@ jobs:
   build:
     working_directory: ~/zazzle
     executor:
-        name: node/default
-        tag: '10.4'
+      name: node/default
+      tag: '10.4'
     steps:
       - checkout
       - node/with-cache:
@@ -27,26 +27,25 @@ jobs:
       - aws-cli/setup
       - checkout
       - restore_cache:
-          keys: 
+          keys:
             - build-cache-{{ .Branch }}
       - run:
           name: AWS deploy
           command: |
-              ls -al
-              aws --region us-east-2 s3 sync build s3://zazzle.yetilabs.ca --delete
+            aws --region us-east-2 s3 sync build s3://zazzle.yetilabs.ca --delete
       - run:
           name: AWS invalidate CF distribution
           command: |
-              aws configure set preview.cloudfront true 
-              aws configure set preview.create-invalidation true
-              aws cloudfront create-invalidation --distribution-id $CF_DISTRIBUTION_ID --paths "/*"
+            aws configure set preview.cloudfront true 
+            aws configure set preview.create-invalidation true
+            aws cloudfront create-invalidation --distribution-id $CF_DISTRIBUTION_ID --paths "/*"
 
 workflows:
   version: 2
   build-deploy:
     jobs:
       - build:
-          filters: 
+          filters:
             branches:
               only: master
       - deploy:
@@ -54,4 +53,4 @@ workflows:
             - build
           filters:
             branches:
-                only: master
+              only: master
