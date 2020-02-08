@@ -1,13 +1,35 @@
 body {
+  height: 100%;
+  width: 100%;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: 'Work Sans', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+html {
+  overflow-y: auto !important;
+  --color-gray: rgb(56, 56, 56);
+  --color-gray__dark: rgb(36, 36, 36);
+  --color-gray__light: rgb(64, 64, 64);
+  --color-gray__lightest: rgb(72, 72, 72);
+  --color-white: rgba(255, 255, 255, 0.95);
+  --color-off-white: rgb(240, 240, 240);
+  --color-primary: #ffe5b4;
+  --color-primary__dark: #ffa64a;
+  --color-secondary: #1eb980;
+  --color-secondary__dark: #045d56;
+  --color-error: #b00020;
+  --border-color: rgba(0, 0, 0, 0.2);
+  --font-color: rgba(0, 0, 0, 0.8);
+  --font-color--hover: rgba(0, 0, 0, 0.6);
+  --font-color__dark: rgba(255, 255, 255, 0.8);
+  --default-transition: 0.125s all ease-in-out;
+
+  --facebook-blue: #3b5998;
+
+  height: 100%;
+  width: 100%;
+  background-color: white;
 }

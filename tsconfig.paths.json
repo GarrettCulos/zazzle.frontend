@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "@appTypes/*": ["types/*"],
+      "@appTypes": ["types"],
+      "@hooks/*": ["hooks/*"],
+      "@hooks": ["hooks"],
+      "@gql/*": ["apollo/*"],
+      "@gql": ["apollo"],
+      "@environment/*": ["environment/*"],
+      "@environment": ["environment"],
+      "@store/*": ["store/*"],
+      "@store": ["store"],
+      "@services/*": ["services/*"],
+      "@services": ["services"]
+    }
+  }
+}
