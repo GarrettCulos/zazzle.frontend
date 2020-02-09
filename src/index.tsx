@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import ApolloClient from 'apollo-boost';
-import { environment } from 'environment/environment';
+import { environment } from '@environment/environment';
 import { ApolloProvider } from '@apollo/react-hooks';
 import store from '@store';
 
