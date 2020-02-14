@@ -20,7 +20,7 @@ interface ContainerInterface {
 }
 const Container = styled.div<ContainerInterface>`
   height: 100%;
-  width: 100%;
+  width: ${({ navClosed }) => (navClosed ? 'calc(100% - 106px)' : 'calc(100% - 291px)')};
   margin-left: ${({ navClosed }) => (navClosed ? '106px' : '291px')};
 `;
 
