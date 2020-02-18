@@ -1,17 +1,24 @@
 // combineEpics,
 import { ofType } from 'redux-observable';
 import { switchMap } from 'rxjs/operators';
-import { SET_AUTH } from './auth.types';
 import { of } from 'rxjs';
+import { SET_AUTH, LOGOUT } from './auth.types';
 
 // persist state in local storage every 1s
-const authEpic = action$ =>
+export const authEpic = action$ =>
   action$.pipe(
     ofType(SET_AUTH),
-    switchMap(action => {
-      console.log('get jwt token from api');
-      return of({ type: 'none' });
+    switchMap((action: any) => {
+      localStorage.setItem('token', action.authData.token);
+      return of({ type: 'done' });
     })
   );
 
-export default authEpic;
+export const logoutEpic = action$ =>
+  action$.pipe(
+    ofType(LOGOUT),
+    switchMap(() => {
+      localStorage.removeItem('token');
+      return of({ type: 'done' });
+    })
+  );

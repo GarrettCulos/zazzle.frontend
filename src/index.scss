@@ -9,6 +9,7 @@ body {
 }
 
 html {
+  overflow-anchor: none;
   overflow-y: auto !important;
   --color-gray: rgb(56, 56, 56);
   --color-gray__dark: rgb(36, 36, 36);
@@ -32,4 +33,11 @@ html {
   height: 100%;
   width: 100%;
   background-color: white;
+}
+
+#root {
+  height: 100%;
+  * > :focus {
+    outline: none;
+  }
 }

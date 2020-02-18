@@ -7,6 +7,7 @@ import { isJwtTokenAuthenticated, isProviderAuthenticated } from '@store/auth/au
 export const getUi = (state: AppState) => state.ui;
 export const getErrorByIds = (state: AppState) => state.ui.error;
 export const getLoadingByIds = (state: AppState) => state.ui.loading;
+export const isProjectCreationOpen = (state: AppState) => state.ui.createProjectModelOpen;
 
 export const getLoadingEvents = createSelector(getLoadingByIds, loading => {
   return loading ? Object.keys(loading).map(key => loading[key]) : [];

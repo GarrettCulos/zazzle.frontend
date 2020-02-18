@@ -1,4 +1,12 @@
-import { SET_THEME, ADD_LOADING, REMOVE_LOADING, ADD_ERROR, REMOVE_ERROR, SET_SIDENAV_STATE } from './ui.types';
+import {
+  SET_PROJECT_MODAL_STATE,
+  SET_THEME,
+  ADD_LOADING,
+  REMOVE_LOADING,
+  ADD_ERROR,
+  REMOVE_ERROR,
+  SET_SIDENAV_STATE
+} from './ui.types';
 
 export const setTheme = (theme: 'dark' | 'light') => ({
   type: SET_THEME,
@@ -31,4 +39,9 @@ export const removeError = (id: string) => ({
 export const setSideNavState = (sideNavState: 'open' | 'closed' | 'extended') => ({
   type: SET_SIDENAV_STATE,
   sideNavState
+});
+
+export const toggleProjectCreationModal = (state: boolean) => ({
+  type: SET_PROJECT_MODAL_STATE,
+  state
 });

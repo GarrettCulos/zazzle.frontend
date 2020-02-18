@@ -1,19 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import ApolloClient from 'apollo-boost';
-import { environment } from '@environment/environment';
 import { ApolloProvider } from '@apollo/react-hooks';
+import client from '@gql';
 import store from '@store';
 
 import './index.scss';
 
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
-
-const client = new ApolloClient({
-  uri: environment.graphqlEndpoint
-});
 
 const rootElement = document.getElementById('root');
 

@@ -17,17 +17,22 @@ export interface UIState {
   sideNavState: 'open' | 'closed' | 'extened';
   error: { [uuid: string]: UIError };
   loading: { [uuid: string]: UILoading };
+  createProjectModelOpen: boolean;
 }
 
 const initialUIState: UIState = {
   theme: 'light',
-  sideNavState: 'open',
+  sideNavState: 'closed',
   error: {},
-  loading: {}
+  loading: {},
+  createProjectModelOpen: false
 };
 
 export const ui = (state: UIState = initialUIState, action: AnyAction) => {
   switch (action.type) {
+    case UITypes.SET_PROJECT_MODAL_STATE: {
+      return { ...state, createProjectModelOpen: action.state !== undefined ? Boolean(action.state) : !action.state };
+    }
     case UITypes.ADD_ERROR: {
       const addError = { ...state.error };
       const id = uuid.v4();
@@ -40,15 +45,16 @@ export const ui = (state: UIState = initialUIState, action: AnyAction) => {
       loading[id] = { id, data, type: loadType };
       return { ...state, loading: { ...loading } };
     }
-    case UITypes.REMOVE_ERROR:
+    case UITypes.REMOVE_ERROR: {
       const removedError = { ...state.error };
       delete removedError[action.id];
       return { ...state, error: { ...removedError } };
-
-    case UITypes.REMOVE_LOADING:
-      let removedLoading = { ...state.loading };
+    }
+    case UITypes.REMOVE_LOADING: {
+      const removedLoading = { ...state.loading };
       delete removedLoading[action.id];
       return { ...state, loading: { ...removedLoading } };
+    }
     case UITypes.SET_SIDENAV_STATE:
       return { ...state, sideNavState: action.sideNavState };
     default:

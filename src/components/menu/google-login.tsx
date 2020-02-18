@@ -23,7 +23,12 @@ const EXCHANGE_GOOGLE_TOKEN = gql`
       token
       expiresIn
       user {
-        emailAddress
+        email
+        id
+        userIcon
+        userName
+        myProjects
+        favorites
       }
     }
   }
@@ -39,20 +44,9 @@ export const GoogleLoginComponent: React.FC<LoginButtonInterface> = ({ tinyButto
           const data: any = await exchangeGoogleToken({
             variables: { email: response.profileObj.email, idToken: response.tokenId }
           });
-          const { token } = data.data.exchangeGoogle;
+          const { token, user } = data.data.exchangeGoogle;
           dispatch(setAuth({ token, provider: 'google', responseData: response }));
-          dispatch(
-            setUser({
-              userName: response.profileObj.name,
-              firstName: response.profileObj.givenName,
-              lastName: response.profileObj.familyName,
-              avatar: {
-                width: 50,
-                height: 50,
-                url: response.profileObj.imageUrl
-              }
-            })
-          );
+          dispatch(setUser(user));
         }
       } catch (error) {
         console.error(error);

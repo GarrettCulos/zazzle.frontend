@@ -25,7 +25,12 @@ const EXCHANGE_FACEBOOK_TOKEN = gql`
       token
       expiresIn
       user {
-        emailAddress
+        email
+        id
+        userIcon
+        userName
+        myProjects
+        favorites
       }
     }
   }
@@ -41,18 +46,9 @@ export const FacebookLoginComponent: React.FC<LoginButtonInterface> = ({ tinyBut
           const data: any = await exchangeFacebookToken({
             variables: { email: response.email, idToken: response.accessToken }
           });
-          const { token } = data.data.exchangeFacebook;
+          const { token, user } = data.data.exchangeFacebook;
           dispatch(setAuth({ token, provider: 'facebook', responseData: response }));
-          dispatch(
-            setUser({
-              userName: response.name,
-              avatar: {
-                width: response.picture.data.width,
-                height: response.picture.data.height,
-                url: response.picture.data.url
-              }
-            })
-          );
+          dispatch(setUser(user));
         }
       } catch (error) {
         console.error(error);

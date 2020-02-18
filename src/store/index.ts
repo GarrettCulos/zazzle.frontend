@@ -1,14 +1,17 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { createLogger } from 'redux-logger';
+import { ApolloClient } from 'apollo-boost';
 import { createEpicMiddleware, combineEpics } from 'redux-observable';
 
 import { environment } from '@environment/environment';
 
 import { ui, UIState } from './ui/ui.reducer';
 import { user, UserState } from './user/user.reducer';
+import { authEpic, logoutEpic } from './auth/auth.epic';
 import initEpic from './init/init.effect';
-import authEpic from './auth/auth.epic';
 import { auth, AuthState } from './auth/auth.reducer';
+
+import client from '@gql';
 
 /**
  * App State type
@@ -40,10 +43,13 @@ if (environment.env === 'dev') {
 }
 
 /** Epic middleware */
-const epicMiddleware = createEpicMiddleware<any, any, AppState, any>();
-const rootEpic = combineEpics(initEpic, authEpic);
-epicMiddleware.run(rootEpic);
+const epicMiddleware = createEpicMiddleware<any, any, AppState, { apollo: ApolloClient<any> }>({
+  dependencies: { apollo: client }
+});
+const rootEpic = combineEpics(authEpic, logoutEpic, initEpic);
 middleware.push(epicMiddleware);
 
 const rootReducer = combineReducers({ ui, user, auth });
-export default createStore(rootReducer, applyMiddleware(...middleware));
+const store = createStore(rootReducer, applyMiddleware(...middleware));
+epicMiddleware.run(rootEpic);
+export default store;

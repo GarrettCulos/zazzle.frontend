@@ -1,6 +1,6 @@
 import { AnyAction } from 'redux';
 import { AuthData } from '@appTypes/auth';
-import { SET_AUTH } from './auth.types';
+import { SET_AUTH, LOGOUT } from './auth.types';
 
 export interface AuthState {
   auth: AuthData | undefined;
@@ -9,7 +9,7 @@ export interface AuthState {
 
 const initialAuthState: AuthState = {
   auth: undefined,
-  jwtToken: undefined
+  jwtToken: localStorage.getItem('token') || undefined
 };
 
 export const auth = (state: AuthState = initialAuthState, action: AnyAction) => {
@@ -17,8 +17,12 @@ export const auth = (state: AuthState = initialAuthState, action: AnyAction) => 
     case SET_AUTH: {
       return {
         ...state,
+        jwtToken: action.authData.token,
         auth: action.authData
       };
+    }
+    case LOGOUT: {
+      return { ...state, jwtToken: undefined, auth: undefined };
     }
     default:
       return state;

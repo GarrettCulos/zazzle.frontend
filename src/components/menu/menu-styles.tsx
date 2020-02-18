@@ -17,7 +17,7 @@ interface SideMenuInterface {
 }
 
 export const SideMenuContainer = styled.div<SideMenuInterface>`
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   bottom: 0;

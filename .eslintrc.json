@@ -6,7 +6,7 @@
     "prettier/@typescript-eslint",
     "plugin:prettier/recommended"
   ],
-  "plugins": ["react", "@typescript-eslint", "prettier"],
+  "plugins": ["react", "@typescript-eslint", "prettier", "react-hooks"],
   "env": {
     "browser": true,
     "jasmine": true,
@@ -19,7 +19,12 @@
         "singleQuote": true
       }
     ],
-    "no-unused-expressions": false
+    "@typescript-eslint/explicit-function-return-type": 0,
+    "@typescript-eslint/no-explicit-any": 0,
+    "no-unused-expressions": 1,
+    "react-hooks/rules-of-hooks": "warn",
+    "react-hooks/exhaustive-deps": "warn",
+    "no-implicit-any": 0
   },
   "settings": {
     "react": {

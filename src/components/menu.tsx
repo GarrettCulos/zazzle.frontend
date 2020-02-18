@@ -1,18 +1,18 @@
 import React, { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { MdSettings, MdFolder, MdStarBorder, MdLocalActivity } from 'react-icons/md';
-import { IoIosFlask as TempLogo } from 'react-icons/io';
+import { MdSettings, MdFolder, MdStarBorder, MdCreateNewFolder, MdLocalActivity } from 'react-icons/md';
+// import { IoIosFlask as TempLogo } from 'react-icons/io';
 
 import { GoogleLoginComponent } from './menu/google-login';
 import { FacebookLoginComponent } from './menu/facebook-login';
 
 import { getUser } from '@store/user/user.selectors';
 import { showLoginSection, getSideNavState } from '@store/ui/ui.selectors';
-import { setSideNavState } from '@store/ui/ui.actions';
+import { toggleProjectCreationModal } from '@store/ui/ui.actions';
 
 import { AppName } from './atomic/app-name';
-import { SideNavToggle } from './atomic/side-nav-toggle';
+// import { SideNavToggle } from './atomic/side-nav-toggle';
 import {
   SideMenuContainer,
   SideMenuHeader,
@@ -40,21 +40,28 @@ export const SideMenu: React.FC = () => {
    */
   const sideNavState = useSelector(getSideNavState);
   const isClosed = sideNavState === 'closed';
-  const toggleSideNav = useCallback(() => {
-    if (sideNavState !== 'open') {
-      dispatch(setSideNavState('open'));
-    } else {
-      dispatch(setSideNavState('closed'));
-    }
-  }, [dispatch, sideNavState]);
+
+  const openCreateProject = useCallback(() => {
+    dispatch(toggleProjectCreationModal(true));
+  }, [dispatch]);
+  //
+  // disable sidenav toggling
+  //
+  // const toggleSideNav = useCallback(() => {
+  //   if (sideNavState !== 'open') {
+  //     dispatch(setSideNavState('open'));
+  //   } else {
+  //     dispatch(setSideNavState('closed'));
+  //   }
+  // }, [dispatch, sideNavState]);
 
   return (
     <SideMenuContainer sideNavState={sideNavState}>
       <SideMenuHeader>
-        <SideNavToggle sideNavState={sideNavState} onClick={toggleSideNav} />
-        <TempLogo style={{ color: 'var(--color-primary__dark)' }} />
-        {!isClosed && <AppName />}
-        <SideMenuSpacer />
+        {/* <SideNavToggle sideNavState={sideNavState} onClick={toggleSideNav} /> */}
+        {/* <TempLogo style={{ color: 'var(--color-primary__dark)' }} /> */}
+        <AppName />
+        {/* <SideMenuSpacer /> */}
         {user && <MdSettings />}
       </SideMenuHeader>
       <MenuDivider />
@@ -79,6 +86,12 @@ export const SideMenu: React.FC = () => {
       {user && (
         <SideMenuRow vertical={isClosed}>
           <MdLocalActivity /> <span>My Projects</span>
+        </SideMenuRow>
+      )}
+      {user && <MenuDivider />}
+      {user && (
+        <SideMenuRow vertical={isClosed} onClick={openCreateProject}>
+          <MdCreateNewFolder /> <span>Add Project</span>
         </SideMenuRow>
       )}
       <SideMenuSpacer />
