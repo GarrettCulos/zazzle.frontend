@@ -227,6 +227,7 @@ export const ProjectModal: React.FC = () => {
                 text={tag}
                 color="standard"
                 removeButtonText="Remove"
+                appearance="rounded"
                 onBeforeRemoveAction={() => {
                   removeTag(tag);
                   return false;

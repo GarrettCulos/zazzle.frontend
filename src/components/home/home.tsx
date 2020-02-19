@@ -14,8 +14,8 @@ import {
 } from 'react-virtualized';
 
 const GET_PROJECTS = gql`
-  query projects($limit: Int, $exclusiveStartKey: JSON) {
-    projects(limit: $limit, exclusiveStartKey: $exclusiveStartKey) {
+  query projects($limit: Int, $sortOrder: String, $sortKey: String, $exclusiveStartKey: JSON) {
+    projects(limit: $limit, sortKey: $sortKey, sortOrder: $sortOrder, exclusiveStartKey: $exclusiveStartKey) {
       queryInfo
       items {
         id
@@ -28,6 +28,7 @@ const GET_PROJECTS = gql`
         description
         projectType
         coverImages
+        tags
         likedBy {
           userName
         }
@@ -97,7 +98,7 @@ const Home: React.FC = () => {
 
   const [queryInfo, setQueryInfo]: [any, Function] = useState();
   const { loading, error, data, ...rest } = useQuery(GET_PROJECTS, {
-    variables: { limit: 25, exclusiveStartKey: undefined }
+    variables: { limit: 25, sortOrder: 'desc', sortKey: 'updatedAt', exclusiveStartKey: undefined }
   });
 
   /**
@@ -117,6 +118,7 @@ const Home: React.FC = () => {
       const width = ref.current.clientWidth;
       virtualScrollReset(width);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ref.current, virtualScrollReset]);
 
   const loadMore = useCallback(async () => {

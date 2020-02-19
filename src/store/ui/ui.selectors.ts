@@ -29,7 +29,7 @@ export const showLoginSection = createSelector(
   getUser,
   isJwtTokenAuthenticated,
   isProviderAuthenticated,
-  (user, jwtToken, providerAuthed) => {
+  (user, jwtToken) => {
     return !user && !jwtToken;
   }
 );

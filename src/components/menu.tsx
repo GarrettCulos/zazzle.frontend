@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { MdSettings, MdFolder, MdStarBorder, MdCreateNewFolder, MdLocalActivity } from 'react-icons/md';
+import { MdFolder, MdStarBorder, MdCreateNewFolder, MdLocalActivity } from 'react-icons/md';
 // import { IoIosFlask as TempLogo } from 'react-icons/io';
 
 import { GoogleLoginComponent } from './menu/google-login';
@@ -22,6 +22,7 @@ import {
   SideMenuRow,
   SmallContinueWith
 } from './menu/menu-styles';
+import Avatar from '@atlaskit/avatar';
 
 export const SideMenu: React.FC = () => {
   const dispatch = useDispatch();
@@ -57,12 +58,16 @@ export const SideMenu: React.FC = () => {
 
   return (
     <SideMenuContainer sideNavState={sideNavState}>
+      {user && (
+        <SideMenuHeader>
+          <Avatar src={user.userIcon} />
+        </SideMenuHeader>
+      )}
       <SideMenuHeader>
         {/* <SideNavToggle sideNavState={sideNavState} onClick={toggleSideNav} /> */}
         {/* <TempLogo style={{ color: 'var(--color-primary__dark)' }} /> */}
         <AppName />
         {/* <SideMenuSpacer /> */}
-        {user && <MdSettings />}
       </SideMenuHeader>
       <MenuDivider />
       {showLogin && (

@@ -1,5 +1,7 @@
 import React from 'react';
 import moment from 'moment';
+import { useSelector } from 'react-redux';
+import { projectIsFavorite } from '@store/user/user.selectors';
 import {
   ProjectTileContainer,
   ProjectFlex,
@@ -7,6 +9,7 @@ import {
   ProjectHeader,
   Title,
   Spacer,
+  TagGroup,
   Description,
   ProjectFooter,
   Collaborators,
@@ -15,20 +18,21 @@ import {
 } from './project-tile.styled';
 import { FaUserCircle } from 'react-icons/fa';
 import { MdTurnedInNot, MdTurnedIn, MdShare } from 'react-icons/md';
+import Avatar from '@atlaskit/avatar';
+import Tag from '@atlaskit/tag';
+
 interface ContainerInterface {
   project: any;
 }
 
 const ProjectTileFC: React.FC<ContainerInterface> = ({ project }: ContainerInterface) => {
-  if (!project) {
-    console.log(project);
-    return <div>empty</div>;
-  }
+  const isFavorite = useSelector(state => projectIsFavorite(state, project.id));
+
   return (
     <ProjectTileContainer>
       <ProjectFlex column>
         <ProjectHeader>
-          <FaUserCircle />
+          {project.user.userIcon ? <Avatar size="medium" src={project.user.userIcon} /> : <FaUserCircle />}
           <ProjectFlex column justifyContent="center">
             <Title>{project.title}</Title>
             <SubTitle>{project.user.userName} </SubTitle>
@@ -43,14 +47,20 @@ const ProjectTileFC: React.FC<ContainerInterface> = ({ project }: ContainerInter
           #{project.projectType}
           <Spacer />
           <MdShare />
-          <MdTurnedIn />
-          <MdTurnedInNot />
+          {isFavorite ? <MdTurnedIn /> : <MdTurnedInNot />}
         </ProjectActions>
         <Description>{project.description}</Description>
+        {project.tags && project.tags.length > 0 && (
+          <TagGroup>
+            {project.tags.map(tag => (
+              <Tag key={tag} text={tag} color="standard" />
+            ))}
+          </TagGroup>
+        )}
         <ProjectFooter>
           <TimeAgo>Updated {moment(new Date(project.updatedAt)).fromNow()}</TimeAgo>
           <Spacer />
-          {project.collaborators && (
+          {project.collaborators && project.collaborators.length > 0 && (
             <Collaborators>
               {project.collaborators.length} Collaborator{project.collaborators.length > 1 ? 's' : ''}
             </Collaborators>

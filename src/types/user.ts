@@ -1,16 +1,11 @@
 export interface User {
   id?: string;
-  fullName?: string;
-  firstName?: string;
-  lastName?: string;
-  userName: string;
+  userName?: string;
+  userIcon: string;
   createdAt?: Date;
   updatedAt?: Date;
-  avatar?: {
-    width?: number;
-    height?: number;
-    url: string;
-  };
+  favorites: string[];
+  myProjects: string[];
   metadata?: {
     [s: string]: any;
   };

@@ -55,10 +55,16 @@ export const ProjectActions = styled(ProjectFlex)`
 export const Spacer = styled.div`
   flex: 1;
 `;
-
+export const TagGroup = styled(ProjectFlex)`
+  font-size: 12px;
+  padding: 4px 8px;
+  min-height: 24px;
+  width: 100%;
+`;
 export const Description = styled(ProjectFlex)`
   font-size: 12px;
   padding: 12px;
+  width: 100%;
 `;
 export const ProjectFooter = styled(ProjectFlex)`
   font-size: 12px;

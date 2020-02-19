@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getSideNavState } from '@store/ui/ui.selectors';
 import styled, { ThemeProvider } from 'styled-components';
 import { IconContext } from 'react-icons';

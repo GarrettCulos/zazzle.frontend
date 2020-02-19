@@ -41,8 +41,9 @@ export const SideMenuContainer = styled.div<SideMenuInterface>`
 export const SideMenuHeader = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   box-sizing: border-box;
-  padding: 1rem;
+  padding: 4px 1rem;
   width: 100%;
 `;
 

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useState, useEffect } from 'react';
 
 const getWidth = (): number => window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;

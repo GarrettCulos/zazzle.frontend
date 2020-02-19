@@ -44,6 +44,7 @@ const initEpic = (action$, store$, { apollo }: { apollo: ApolloClient<any> }) =>
   action$.pipe(
     ofType('INIT'),
     withLatestFrom(store$),
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     switchMap(([action, store]) => {
       const token = getJwtToken(store);
       return initObservable(token, apollo);
