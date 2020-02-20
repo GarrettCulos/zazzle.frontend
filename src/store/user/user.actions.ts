@@ -2,7 +2,7 @@
 import { User } from '@appTypes/user';
 import { SET_USER } from './user.types';
 
-export const setUser = (user: User | undefined) => ({
+export const setUser = (user?: User) => ({
   type: SET_USER,
   user
 });

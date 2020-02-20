@@ -23,6 +23,7 @@ import {
   SmallContinueWith
 } from './menu/menu-styles';
 import Avatar from '@atlaskit/avatar';
+import { environment } from '@environment/environment';
 
 export const SideMenu: React.FC = () => {
   const dispatch = useDispatch();
@@ -83,12 +84,12 @@ export const SideMenu: React.FC = () => {
       <SideMenuRow active={true} vertical={isClosed}>
         <MdFolder /> <span>Projects</span>
       </SideMenuRow>
-      {user && (
+      {environment.features.favorites && user && (
         <SideMenuRow vertical={isClosed}>
           <MdStarBorder /> <span>Favorites</span>
         </SideMenuRow>
       )}
-      {user && (
+      {environment.features.myProjects && user && (
         <SideMenuRow vertical={isClosed}>
           <MdLocalActivity /> <span>My Projects</span>
         </SideMenuRow>

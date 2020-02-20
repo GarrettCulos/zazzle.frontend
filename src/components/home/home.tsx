@@ -1,9 +1,9 @@
 import React, { useCallback, useRef, useEffect, useState } from 'react';
 import useResize from '@hooks/onResize';
-import styled from 'styled-components';
 import { useQuery } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import ProjectTile from '../project/project-tile';
+import { LoadMore, PageContainer, LoadingContainer } from './home-styled';
 import {
   Masonry,
   AutoSizer,
@@ -43,13 +43,6 @@ const GET_PROJECTS = gql`
       }
     }
   }
-`;
-
-const PageContainer = styled.div`
-  height: 100%;
-  width: calc(100% - 32px);
-  max-width: 1200px;
-  margin: 16px;
 `;
 
 const overscanByPixels = 300;
@@ -98,7 +91,7 @@ const Home: React.FC = () => {
 
   const [queryInfo, setQueryInfo]: [any, Function] = useState();
   const { loading, error, data, ...rest } = useQuery(GET_PROJECTS, {
-    variables: { limit: 25, sortOrder: 'desc', sortKey: 'updatedAt', exclusiveStartKey: undefined }
+    variables: { limit: 10, sortOrder: 'desc', sortKey: 'updatedAt', exclusiveStartKey: undefined }
   });
 
   /**
@@ -122,9 +115,12 @@ const Home: React.FC = () => {
   }, [ref.current, virtualScrollReset]);
 
   const loadMore = useCallback(async () => {
+    if (!queryInfo.LastEvaluatedKey) {
+      return;
+    }
     rest.fetchMore({
       variables: {
-        limit: 25,
+        limit: 10,
         exclusiveStartKey: queryInfo.LastEvaluatedKey
       },
       updateQuery: (prev: any, { fetchMoreResult }) => {
@@ -159,10 +155,10 @@ const Home: React.FC = () => {
   };
 
   if (loading) {
-    return <div>loading</div>;
+    return <LoadingContainer>loading</LoadingContainer>;
   }
   if (error) {
-    return <div>error</div>;
+    return <LoadingContainer>error</LoadingContainer>;
   }
   return (
     <PageContainer ref={ref}>
@@ -186,7 +182,7 @@ const Home: React.FC = () => {
           </AutoSizer>
         )}
       </WindowScroller>
-      <div onClick={loadMore}>load more</div>
+      {queryInfo && queryInfo.LastEvaluatedKey && <LoadMore onClick={loadMore}>load more</LoadMore>}
     </PageContainer>
   );
 };

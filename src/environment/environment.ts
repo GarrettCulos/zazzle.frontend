@@ -12,6 +12,7 @@ export const environment: Environment = {
   facebookClientId: '1048745462190816',
   features: {
     favorites: true,
-    myProjects: true
+    myProjects: true,
+    share: true
   }
 };

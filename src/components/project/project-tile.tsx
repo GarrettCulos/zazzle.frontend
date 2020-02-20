@@ -1,6 +1,7 @@
 import React from 'react';
 import moment from 'moment';
 import { useSelector } from 'react-redux';
+import { environment } from '@environment/environment';
 import { projectIsFavorite } from '@store/user/user.selectors';
 import {
   ProjectTileContainer,
@@ -46,8 +47,8 @@ const ProjectTileFC: React.FC<ContainerInterface> = ({ project }: ContainerInter
         <ProjectActions>
           #{project.projectType}
           <Spacer />
-          <MdShare />
-          {isFavorite ? <MdTurnedIn /> : <MdTurnedInNot />}
+          {environment.features.share && <MdShare />}
+          {environment.features.favorites && (isFavorite ? <MdTurnedIn /> : <MdTurnedInNot />)}
         </ProjectActions>
         <Description>{project.description}</Description>
         {project.tags && project.tags.length > 0 && (

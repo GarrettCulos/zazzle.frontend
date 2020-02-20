@@ -3,6 +3,7 @@ import { ofType } from 'redux-observable';
 import { switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { SET_AUTH, LOGOUT } from './auth.types';
+import { setUser } from '../user/user.actions';
 
 // persist state in local storage every 1s
 export const authEpic = action$ =>
@@ -19,6 +20,6 @@ export const logoutEpic = action$ =>
     ofType(LOGOUT),
     switchMap(() => {
       localStorage.removeItem('token');
-      return of({ type: 'done' });
+      return of(setUser());
     })
   );

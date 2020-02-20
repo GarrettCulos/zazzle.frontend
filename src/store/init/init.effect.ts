@@ -28,10 +28,11 @@ const initObservable = (token, apollo) =>
         const response: any = await apollo.query({ query: GET_CURRENT_USER });
         if (!response.data.currentUser) {
           observer.next(logout());
-          return;
+        } else {
+          observer.next(setUser(response.data.currentUser));
         }
-        observer.next(setUser(response.data.currentUser));
       } catch (err) {
+        observer.next(logout());
         observer.next(DONE);
       }
     } else {
