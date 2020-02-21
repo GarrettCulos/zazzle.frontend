@@ -1,8 +1,12 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import moment from 'moment';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useMutation } from '@apollo/react-hooks';
+import gql from 'graphql-tag';
+
 import { environment } from '@environment/environment';
 import { projectIsFavorite } from '@store/user/user.selectors';
+import { toggleUserFavorites } from '@store/user/user.actions';
 import {
   ProjectTileContainer,
   ProjectFlex,
@@ -22,13 +26,34 @@ import { MdTurnedInNot, MdTurnedIn, MdShare } from 'react-icons/md';
 import Avatar from '@atlaskit/avatar';
 import Tag from '@atlaskit/tag';
 
+const CHANGE_FAVORITES = gql`
+  mutation changeFavorites($mode: String!, $projectId: String!) {
+    changeFavorites(mode: $mode, projectId: $projectId)
+  }
+`;
+
 interface ContainerInterface {
   project: any;
 }
 
 const ProjectTileFC: React.FC<ContainerInterface> = ({ project }: ContainerInterface) => {
-  const isFavorite = useSelector(state => projectIsFavorite(state, project.id));
+  const dispatch = useDispatch();
 
+  const isFavorite = useSelector(state => projectIsFavorite(state, project.id));
+  const [changeFavorites] = useMutation(CHANGE_FAVORITES);
+  const toggleFav = useCallback(
+    (mode: 'add' | 'remove', projectId: string) => async () => {
+      try {
+        await changeFavorites({
+          variables: { mode, projectId }
+        });
+        dispatch(toggleUserFavorites(mode, projectId));
+      } catch (err) {
+        console.error(err);
+      }
+    },
+    [changeFavorites, dispatch]
+  );
   return (
     <ProjectTileContainer>
       <ProjectFlex column>
@@ -48,7 +73,12 @@ const ProjectTileFC: React.FC<ContainerInterface> = ({ project }: ContainerInter
           #{project.projectType}
           <Spacer />
           {environment.features.share && <MdShare />}
-          {environment.features.favorites && (isFavorite ? <MdTurnedIn /> : <MdTurnedInNot />)}
+          {environment.features.favorites &&
+            (isFavorite ? (
+              <MdTurnedIn onClick={toggleFav('remove', project.id)} />
+            ) : (
+              <MdTurnedInNot onClick={toggleFav('add', project.id)} />
+            ))}
         </ProjectActions>
         <Description>{project.description}</Description>
         {project.tags && project.tags.length > 0 && (

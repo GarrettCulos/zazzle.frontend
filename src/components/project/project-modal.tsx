@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { graphql } from '@apollo/react-hoc';
+import { MdAdd } from 'react-icons/md';
 import moment from 'moment';
 
 // import { FaUserCircle } from 'react-icons/fa';
@@ -8,14 +9,14 @@ import moment from 'moment';
 
 import Button from '@atlaskit/button';
 import ModalDialog, { ModalFooter, ModalTransition } from '@atlaskit/modal-dialog';
-import Form, { Field, ErrorMessage, CheckboxField } from '@atlaskit/form';
+import Form, { Field, Fieldset, ErrorMessage, CheckboxField } from '@atlaskit/form';
 import { Checkbox } from '@atlaskit/checkbox';
 import Textfield from '@atlaskit/textfield';
 import { DatePicker } from '@atlaskit/datetime-picker';
 import Tag from '@atlaskit/tag';
-import TagGroup from '@atlaskit/tag-group';
 import TextArea from '@atlaskit/textarea';
 import Select from '@atlaskit/select';
+import { InputButton } from '../atomic/input-button';
 // editor breaks build ???
 // import { Editor } from '@atlaskit/editor-core';
 
@@ -63,9 +64,11 @@ interface ProjectModalBaseInterface {
   addProject: any;
 }
 class ProjectModalBase extends React.Component<ProjectModalBaseInterface> {
-  state: { error: any; projectTags: string[] } = {
+  state: { error: any; projectTags: string[]; isDisabled: boolean; metricTemplate: any[] } = {
     projectTags: [],
-    error: undefined
+    error: undefined,
+    isDisabled: false,
+    metricTemplate: []
   };
 
   addTag = (tag: string) => {
@@ -74,16 +77,18 @@ class ProjectModalBase extends React.Component<ProjectModalBaseInterface> {
     }
     this.setState({ projectTags: [...this.state.projectTags, tag] });
   };
+
   removeTag = (tag: string) => {
     this.setState({ projectTags: this.state.projectTags.filter(t => t !== tag) });
   };
 
-  onClose = () => toggleProjectCreationModal(false);
+  onClose = () => this.props.toggleProjectCreationModal(false);
 
   onFormSubmit = async ({ title, privateProject, startDate, endDate, projectType, description, tag, event }) => {
     const { projectTags } = this.state;
     const { addProject } = this.props;
     try {
+      this.setState({ isDisabled: true });
       const data = await addProject({
         variables: {
           project: {
@@ -98,13 +103,30 @@ class ProjectModalBase extends React.Component<ProjectModalBaseInterface> {
           }
         }
       });
+      this.setState({ isDisabled: false });
       this.onClose();
       console.log(data);
     } catch (err) {
-      this.setState({ error: err });
+      this.setState({ error: err, isDisabled: false });
       console.error(err);
     }
   };
+
+  addMetricTemplate = () => {
+    this.setState((state: any) => ({
+      metricTemplate: [
+        ...state.metricTemplate,
+        { type: '', name: '', description: '', key: `template-${this.state.metricTemplate.length}` }
+      ]
+    }));
+  };
+
+  removeMetricTemplate = key => {
+    this.setState((state: any) => ({
+      metricTemplate: state.metricTemplate.filter(template => template.key !== key)
+    }));
+  };
+
   footer = () => (
     <ModalFooter>
       <Button onClick={this.onClose}>Cancel</Button>
@@ -114,8 +136,9 @@ class ProjectModalBase extends React.Component<ProjectModalBaseInterface> {
       </Button>
     </ModalFooter>
   );
+
   render() {
-    const { projectTags, error } = this.state;
+    const { projectTags, isDisabled, metricTemplate, error } = this.state;
     const { isOpen } = this.props;
     return (
       <ModalTransition>
@@ -125,16 +148,7 @@ class ProjectModalBase extends React.Component<ProjectModalBaseInterface> {
             components={{
               // eslint-disable-next-line react/display-name
               Container: ({ children, className }: ContainerProps) => (
-                <Form
-                  onSubmit={(event: any) => {
-                    console.log(event);
-                    // if (event.key === 13) {
-                    //   event.preventDefault();
-                    //   return;
-                    // }
-                    return this.onFormSubmit(event);
-                  }}
-                >
+                <Form isDisabled={isDisabled} onSubmit={this.onFormSubmit}>
                   {({ formProps }) => (
                     <form {...formProps} className={className}>
                       {children}
@@ -216,32 +230,34 @@ class ProjectModalBase extends React.Component<ProjectModalBaseInterface> {
                 <Textfield
                   {...inputProps}
                   {...fieldProps}
-                  onKeyPress={event => {
-                    if (event.key === 'Enter') {
-                      event.preventDefault();
-                      this.addTag(event.target && (event.target as any).value);
-                      fieldProps.value = '';
-                      return;
-                    }
-                  }}
+                  elemAfterInput={
+                    <InputButton
+                      onClick={() => {
+                        if (fieldProps.value !== '') {
+                          this.addTag(fieldProps.value);
+                          fieldProps.value = '';
+                        }
+                      }}
+                    >
+                      <MdAdd />
+                    </InputButton>
+                  }
+                  elemBeforeInput={projectTags.map(tag => (
+                    <Tag
+                      key={tag}
+                      text={tag}
+                      color="standard"
+                      removeButtonText="Remove"
+                      appearance="rounded"
+                      onBeforeRemoveAction={() => {
+                        this.removeTag(tag);
+                        return false;
+                      }}
+                    />
+                  ))}
                 />
               )}
             </Field>
-            <TagGroup>
-              {projectTags.map(tag => (
-                <Tag
-                  key={tag}
-                  text={tag}
-                  color="standard"
-                  removeButtonText="Remove"
-                  appearance="rounded"
-                  onBeforeRemoveAction={() => {
-                    this.removeTag(tag);
-                    return false;
-                  }}
-                />
-              ))}
-            </TagGroup>
 
             {/* collaborators */}
             {/* location */}
@@ -253,7 +269,48 @@ class ProjectModalBase extends React.Component<ProjectModalBaseInterface> {
             <CheckboxField name="privateProject">
               {({ fieldProps }) => <Checkbox {...fieldProps} value="" label="Private Project" />}
             </CheckboxField>
+
+            {/* <p>
+              Use the metric templates to track data, measure improvements, and activity over the lifetime of your
+              project.
+            </p> */}
             {/* metric section */}
+            {metricTemplate.map((template, index) => {
+              return (
+                <Fieldset key={template.key} legend={`Metric Template ${index + 1}`}>
+                  <Field label="Type" name={`type__${template.key}`} isRequired>
+                    {({ fieldProps }) => (
+                      <Select
+                        {...inputProps}
+                        className="single-select"
+                        classNamePrefix="react-select"
+                        options={[
+                          { label: 'String', key: 'string' },
+                          { label: 'Number', key: 'number' },
+                          { label: 'Date', key: 'date' }
+                        ]}
+                        onChange={value => {
+                          fieldProps.onChange((value as any).value);
+                        }}
+                        onBlur={fieldProps.onBlur}
+                        onFocus={fieldProps.onFocus}
+                        placeholder="Select Metric Type"
+                      />
+                    )}
+                  </Field>
+                  <Field label="Name" name={`name__${template.key}`} isRequired>
+                    {({ fieldProps }) => <Textfield {...inputProps} {...fieldProps} />}
+                  </Field>
+                  <Field label="Description" name={`description__${template.key}`} isRequired>
+                    {({ fieldProps }) => <Textfield {...inputProps} {...fieldProps} />}
+                  </Field>
+                  <Button appearance="subtle" onClick={() => this.removeMetricTemplate(template.key)}>
+                    Remove Template
+                  </Button>
+                </Fieldset>
+              );
+            })}
+            {/* <Button onClick={this.addMetricTemplate}>Add Metric Template</Button> */}
           </ModalDialog>
         )}
       </ModalTransition>

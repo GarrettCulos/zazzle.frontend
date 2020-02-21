@@ -5,8 +5,8 @@ export const projectIsFavorite = createSelector(
   getUser,
   (_, projectId) => projectId,
   (user, projectId) => {
-    if (user) {
-      return user.favorites.includes(projectId);
+    if (user && user.favorites) {
+      return user.favorites.some(fav => fav.projectId === projectId);
     }
     return false;
   }

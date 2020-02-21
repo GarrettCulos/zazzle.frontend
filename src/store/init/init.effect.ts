@@ -15,7 +15,9 @@ const GET_CURRENT_USER = gql`
       userIcon
       userName
       myProjects
-      favorites
+      favorites {
+        projectId
+      }
     }
   }
 `;
