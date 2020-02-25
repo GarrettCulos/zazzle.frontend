@@ -146,7 +146,7 @@ const Home: React.FC = () => {
   /**
    * virtualize cell renderer
    */
-  const cellRenderer = ({ index, key, parent, style }: any) => {
+  const cellRenderer = ({ index, parent, style }: any) => {
     const item = items[index];
     if (!item) {
       return '';

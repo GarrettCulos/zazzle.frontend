@@ -47,7 +47,7 @@ class AddMetricModal extends React.Component<AddMetricInterface> {
       }
       this.setState({ isDisabled: true });
       console.log([{ value, date, key: metricTemplate.key }]);
-      const data = await addMetric({
+      await addMetric({
         variables: {
           projectId: projectId,
           metrics: [{ value, date, key: metricTemplate.key }]
@@ -116,7 +116,7 @@ class AddMetricModal extends React.Component<AddMetricInterface> {
     );
   }
 }
-const mapStatsToProps = state => ({});
+const mapStatsToProps = () => ({});
 const mapDispatchToProps = {};
 export const AddMetric = graphql<AddMetricInterface, any>(ADD_METRIC, { name: 'addMetric' })(
   connect(mapStatsToProps, mapDispatchToProps)(AddMetricModal)
