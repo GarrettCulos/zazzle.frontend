@@ -11,3 +11,14 @@ export const projectIsFavorite = createSelector(
     return false;
   }
 );
+
+export const projectIsMine = createSelector(
+  getUser,
+  (_, projectId) => projectId,
+  (user, projectId) => {
+    if (user && user.favorites) {
+      return user.myProjects.includes(projectId);
+    }
+    return false;
+  }
+);

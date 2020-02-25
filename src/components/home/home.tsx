@@ -35,6 +35,12 @@ const GET_PROJECTS = gql`
         followCount
         updatedAt
         createdAt
+        metricTemplates {
+          key
+          name
+          description
+          type
+        }
         collaborators {
           id
           userName
@@ -146,8 +152,8 @@ const Home: React.FC = () => {
       return '';
     }
     return (
-      <CellMeasurer cache={cellCache} index={index} key={key} parent={parent}>
-        <div key={key} style={{ ...style, width: Math.min(550, width - 106 - 32 - 16) }}>
+      <CellMeasurer cache={cellCache} index={index} key={item.id} parent={parent}>
+        <div key={item.id} style={{ ...style, width: Math.min(550, width - 106 - 32 - 16) }}>
           <ProjectTile project={item} />
         </div>
       </CellMeasurer>

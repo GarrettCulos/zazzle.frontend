@@ -26,10 +26,6 @@ import { ProjectTypes } from '@environment/constants';
 
 import gql from 'graphql-tag';
 
-interface ContainerProps {
-  children: React.ReactNode;
-  className?: string;
-}
 const inputProps = { autoComplete: 'off' };
 const ADD_PROJECT = gql`
   mutation addProject($project: CreateProjectInput) {
@@ -64,11 +60,11 @@ interface ProjectModalBaseInterface {
   addProject: any;
 }
 class ProjectModalBase extends React.Component<ProjectModalBaseInterface> {
-  state: { error: any; projectTags: string[]; isDisabled: boolean; metricTemplate: any[] } = {
+  state: { error: any; projectTags: string[]; isDisabled: boolean; metricTemplates: any[] } = {
     projectTags: [],
     error: undefined,
     isDisabled: false,
-    metricTemplate: []
+    metricTemplates: []
   };
 
   addTag = (tag: string) => {
@@ -82,10 +78,22 @@ class ProjectModalBase extends React.Component<ProjectModalBaseInterface> {
     this.setState({ projectTags: this.state.projectTags.filter(t => t !== tag) });
   };
 
+  templateChange = (key, field, value) => {
+    this.setState((state: any) => {
+      const metricTemplates = state.metricTemplates.map(temp => {
+        if (temp.key === key) {
+          temp[field] = value;
+        }
+        return temp;
+      });
+      return { metricTemplates };
+    });
+  };
+
   onClose = () => this.props.toggleProjectCreationModal(false);
 
   onFormSubmit = async ({ title, privateProject, startDate, endDate, projectType, description, tag, event }) => {
-    const { projectTags } = this.state;
+    const { projectTags, metricTemplates } = this.state;
     const { addProject } = this.props;
     try {
       this.setState({ isDisabled: true });
@@ -99,12 +107,14 @@ class ProjectModalBase extends React.Component<ProjectModalBaseInterface> {
             startDate,
             endDate,
             event: event !== '' ? event : undefined,
-            tags: tag !== '' ? [...projectTags, tag] : projectTags
+            tags: tag !== '' ? [...projectTags, tag] : projectTags,
+            metricTemplates: metricTemplates ? metricTemplates : []
           }
         }
       });
       this.setState({ isDisabled: false });
       this.onClose();
+      // push to local storage
       console.log(data);
     } catch (err) {
       this.setState({ error: err, isDisabled: false });
@@ -114,203 +124,211 @@ class ProjectModalBase extends React.Component<ProjectModalBaseInterface> {
 
   addMetricTemplate = () => {
     this.setState((state: any) => ({
-      metricTemplate: [
-        ...state.metricTemplate,
-        { type: '', name: '', description: '', key: `template-${this.state.metricTemplate.length}` }
+      metricTemplates: [
+        ...state.metricTemplates,
+        { type: '', name: '', description: '', key: `template-${this.state.metricTemplates.length}` }
       ]
     }));
   };
 
   removeMetricTemplate = key => {
     this.setState((state: any) => ({
-      metricTemplate: state.metricTemplate.filter(template => template.key !== key)
+      metricTemplates: state.metricTemplates.filter(template => template.key !== key)
     }));
   };
 
-  footer = () => (
-    <ModalFooter>
-      <Button onClick={this.onClose}>Cancel</Button>
-      <span />
-      <Button appearance="primary" type="submit">
-        Submit
-      </Button>
-    </ModalFooter>
-  );
-
   render() {
-    const { projectTags, isDisabled, metricTemplate, error } = this.state;
+    const { projectTags, isDisabled, metricTemplates, error } = this.state;
     const { isOpen } = this.props;
     return (
       <ModalTransition>
         {isOpen && (
-          <ModalDialog
-            shouldCloseOnOverlayClick={false}
-            components={{
-              // eslint-disable-next-line react/display-name
-              Container: ({ children, className }: ContainerProps) => (
-                <Form isDisabled={isDisabled} onSubmit={this.onFormSubmit}>
-                  {({ formProps }) => (
-                    <form {...formProps} className={className}>
-                      {children}
-                    </form>
-                  )}
-                </Form>
-              ),
-              Footer: this.footer
-            }}
-            heading="Add Project"
-            onClose={this.onClose}
-          >
-            {error && <ErrorMessage>An error has happened. poop.</ErrorMessage>}
+          <ModalDialog shouldCloseOnOverlayClick={false} heading="Add Project" onClose={this.onClose}>
+            <Form isDisabled={isDisabled} onSubmit={this.onFormSubmit}>
+              {({ formProps }) => (
+                <form {...formProps}>
+                  {error && <ErrorMessage>An error has happened. poop.</ErrorMessage>}
 
-            {/* title */}
-            <Field label="Title" name="title" defaultValue="" isRequired>
-              {({ fieldProps }) => <Textfield {...inputProps} {...fieldProps} />}
-            </Field>
+                  {/* title */}
+                  <Field label="Title" name="title" defaultValue="" isRequired>
+                    {({ fieldProps }) => <Textfield {...inputProps} {...fieldProps} />}
+                  </Field>
 
-            {/* startDate */}
-            <Field label="Start Date" name="startDate" defaultValue={new Date().toISOString()} isRequired>
-              {({ fieldProps }) => <DatePicker {...fieldProps} />}
-            </Field>
+                  {/* startDate */}
+                  <Field label="Start Date" name="startDate" defaultValue={new Date().toISOString()} isRequired>
+                    {({ fieldProps }) => <DatePicker {...fieldProps} />}
+                  </Field>
 
-            {/* endDate */}
-            <Field
-              label="End Date"
-              name="endDate"
-              defaultValue={moment()
-                .add(30, 'days')
-                .toISOString()}
-              isRequired
-            >
-              {({ fieldProps }) => <DatePicker {...fieldProps} />}
-            </Field>
+                  {/* endDate */}
+                  <Field
+                    label="End Date"
+                    name="endDate"
+                    defaultValue={moment()
+                      .add(30, 'days')
+                      .toISOString()}
+                    isRequired
+                  >
+                    {({ fieldProps }) => <DatePicker {...fieldProps} />}
+                  </Field>
 
-            {/* project type */}
-            <Field label="Project Type" name="projectType" isRequired>
-              {({ fieldProps }) => (
-                <Select
-                  {...inputProps}
-                  className="single-select"
-                  classNamePrefix="react-select"
-                  options={ProjectTypes}
-                  onChange={value => {
-                    fieldProps.onChange((value as any).value);
-                  }}
-                  onBlur={fieldProps.onBlur}
-                  onFocus={fieldProps.onFocus}
-                  placeholder="Select Project Type"
-                />
-              )}
-            </Field>
-
-            {/* description */}
-            <Field label="Description" name="description" isRequired>
-              {({ fieldProps }) => {
-                return (
-                  <TextArea
-                    {...inputProps}
-                    isDisabled={fieldProps.isDisabled}
-                    isRequired={fieldProps.isRequired}
-                    name={fieldProps.name}
-                    onBlur={fieldProps.onBlur}
-                    onFocus={fieldProps.onFocus}
-                    onChange={event => {
-                      fieldProps.onChange(event.target ? event.target.value : '');
-                    }}
-                  />
-                );
-              }}
-            </Field>
-
-            {/* <Editor appearance="full-width" /> */}
-            {/* coverImages */}
-            {/* tags */}
-            <Field label="Tags" name="tag" defaultValue="">
-              {({ fieldProps }) => (
-                <Textfield
-                  {...inputProps}
-                  {...fieldProps}
-                  elemAfterInput={
-                    <InputButton
-                      onClick={() => {
-                        if (fieldProps.value !== '') {
-                          this.addTag(fieldProps.value);
-                          fieldProps.value = '';
-                        }
-                      }}
-                    >
-                      <MdAdd />
-                    </InputButton>
-                  }
-                  elemBeforeInput={projectTags.map(tag => (
-                    <Tag
-                      key={tag}
-                      text={tag}
-                      color="standard"
-                      removeButtonText="Remove"
-                      appearance="rounded"
-                      onBeforeRemoveAction={() => {
-                        this.removeTag(tag);
-                        return false;
-                      }}
-                    />
-                  ))}
-                />
-              )}
-            </Field>
-
-            {/* collaborators */}
-            {/* location */}
-            {/* event */}
-            <Field label="Event" name="event" defaultValue="">
-              {({ fieldProps }) => <Textfield {...inputProps} {...fieldProps} />}
-            </Field>
-
-            <CheckboxField name="privateProject">
-              {({ fieldProps }) => <Checkbox {...fieldProps} value="" label="Private Project" />}
-            </CheckboxField>
-
-            {/* <p>
-              Use the metric templates to track data, measure improvements, and activity over the lifetime of your
-              project.
-            </p> */}
-            {/* metric section */}
-            {metricTemplate.map((template, index) => {
-              return (
-                <Fieldset key={template.key} legend={`Metric Template ${index + 1}`}>
-                  <Field label="Type" name={`type__${template.key}`} isRequired>
+                  {/* project type */}
+                  <Field label="Project Type" name="projectType" isRequired>
                     {({ fieldProps }) => (
                       <Select
                         {...inputProps}
                         className="single-select"
                         classNamePrefix="react-select"
-                        options={[
-                          { label: 'String', key: 'string' },
-                          { label: 'Number', key: 'number' },
-                          { label: 'Date', key: 'date' }
-                        ]}
+                        options={ProjectTypes}
                         onChange={value => {
                           fieldProps.onChange((value as any).value);
                         }}
                         onBlur={fieldProps.onBlur}
                         onFocus={fieldProps.onFocus}
-                        placeholder="Select Metric Type"
+                        placeholder="Select Project Type"
                       />
                     )}
                   </Field>
-                  <Field label="Name" name={`name__${template.key}`} isRequired>
+
+                  {/* description */}
+                  <Field label="Description" name="description" isRequired>
+                    {({ fieldProps }) => {
+                      return (
+                        <TextArea
+                          {...inputProps}
+                          isDisabled={fieldProps.isDisabled}
+                          isRequired={fieldProps.isRequired}
+                          name={fieldProps.name}
+                          onBlur={fieldProps.onBlur}
+                          onFocus={fieldProps.onFocus}
+                          onChange={event => {
+                            fieldProps.onChange(event.target ? event.target.value : '');
+                          }}
+                        />
+                      );
+                    }}
+                  </Field>
+
+                  {/* <Editor appearance="full-width" /> */}
+                  {/* coverImages */}
+                  {/* tags */}
+                  <Field label="Tags" name="tag" defaultValue="">
+                    {({ fieldProps }) => (
+                      <Textfield
+                        {...inputProps}
+                        {...fieldProps}
+                        elemAfterInput={
+                          <InputButton
+                            onClick={event => {
+                              console.log(fieldProps);
+                              if (fieldProps.value !== '') {
+                                this.addTag(fieldProps.value);
+                                fieldProps.value = '';
+                                (event.target as any).value = '';
+                              }
+                            }}
+                          >
+                            <MdAdd />
+                          </InputButton>
+                        }
+                        elemBeforeInput={projectTags.map(tag => (
+                          <Tag
+                            key={tag}
+                            text={tag}
+                            color="standard"
+                            removeButtonText="Remove"
+                            appearance="rounded"
+                            onBeforeRemoveAction={() => {
+                              this.removeTag(tag);
+                              return false;
+                            }}
+                          />
+                        ))}
+                      />
+                    )}
+                  </Field>
+
+                  {/* collaborators */}
+                  {/* location */}
+                  {/* event */}
+                  <Field label="Event" name="event" defaultValue="">
                     {({ fieldProps }) => <Textfield {...inputProps} {...fieldProps} />}
                   </Field>
-                  <Field label="Description" name={`description__${template.key}`} isRequired>
-                    {({ fieldProps }) => <Textfield {...inputProps} {...fieldProps} />}
-                  </Field>
-                  <Button appearance="subtle" onClick={() => this.removeMetricTemplate(template.key)}>
-                    Remove Template
-                  </Button>
-                </Fieldset>
-              );
-            })}
-            {/* <Button onClick={this.addMetricTemplate}>Add Metric Template</Button> */}
+
+                  <CheckboxField name="privateProject">
+                    {({ fieldProps }) => <Checkbox {...fieldProps} value="" label="Private Project" />}
+                  </CheckboxField>
+
+                  <p>
+                    Use the metric templates to track data, measure improvements, and activity over the lifetime of your
+                    project.
+                  </p>
+                  {/* metric section */}
+                  {metricTemplates.map((template, index) => {
+                    return (
+                      <Fieldset key={template.key} legend={`Metric Template ${index + 1}`}>
+                        <Field label="Type" name={`type__${template.key}`} isRequired>
+                          {({ fieldProps }) => (
+                            <Select
+                              {...inputProps}
+                              className="single-select"
+                              classNamePrefix="react-select"
+                              options={[
+                                { label: 'String', key: 'string' },
+                                { label: 'Number', key: 'number' },
+                                { label: 'Date', key: 'date' }
+                              ]}
+                              onChange={value => {
+                                fieldProps.onChange((value as any).key);
+                                this.templateChange(template.key, 'type', (value as any).key);
+                              }}
+                              onBlur={fieldProps.onBlur}
+                              onFocus={fieldProps.onFocus}
+                              placeholder="Select Metric Type"
+                            />
+                          )}
+                        </Field>
+                        <Field label="Name" name={`name__${template.key}`} isRequired>
+                          {({ fieldProps }) => (
+                            <Textfield
+                              {...inputProps}
+                              {...fieldProps}
+                              onChange={value => {
+                                fieldProps.onChange((value.target as any).value);
+                                this.templateChange(template.key, 'name', (value.target as any).value);
+                              }}
+                            />
+                          )}
+                        </Field>
+                        <Field label="Description" name={`description__${template.key}`} isRequired>
+                          {({ fieldProps }) => (
+                            <Textfield
+                              {...inputProps}
+                              {...fieldProps}
+                              onChange={value => {
+                                fieldProps.onChange((value.target as any).value);
+                                this.templateChange(template.key, 'description', (value.target as any).value);
+                              }}
+                            />
+                          )}
+                        </Field>
+                        <Button appearance="subtle" onClick={() => this.removeMetricTemplate(template.key)}>
+                          Remove Template
+                        </Button>
+                      </Fieldset>
+                    );
+                  })}
+                  <Button onClick={this.addMetricTemplate}>Add Metric Template</Button>
+
+                  <ModalFooter>
+                    <Button onClick={this.onClose}>Cancel</Button>
+                    <span />
+                    <Button appearance="primary" type="submit">
+                      Submit
+                    </Button>
+                  </ModalFooter>
+                </form>
+              )}
+            </Form>
           </ModalDialog>
         )}
       </ModalTransition>

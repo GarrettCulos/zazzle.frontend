@@ -4,8 +4,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useMutation } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 
+import ContextMenu from '../context-menu/context-menu';
+import IconButton from '../atomic/icon-button';
+
 import { environment } from '@environment/environment';
-import { projectIsFavorite } from '@store/user/user.selectors';
+import { projectIsFavorite, projectIsMine } from '@store/user/user.selectors';
 import { toggleUserFavorites } from '@store/user/user.actions';
 import {
   ProjectTileContainer,
@@ -40,6 +43,7 @@ const ProjectTileFC: React.FC<ContainerInterface> = ({ project }: ContainerInter
   const dispatch = useDispatch();
 
   const isFavorite = useSelector(state => projectIsFavorite(state, project.id));
+  const isMyList = useSelector(state => projectIsMine(state, project.id));
   const [changeFavorites] = useMutation(CHANGE_FAVORITES);
   const toggleFav = useCallback(
     (mode: 'add' | 'remove', projectId: string) => async () => {
@@ -72,19 +76,28 @@ const ProjectTileFC: React.FC<ContainerInterface> = ({ project }: ContainerInter
         <ProjectActions>
           #{project.projectType}
           <Spacer />
-          {environment.features.share && <MdShare />}
+          {environment.features.share && (
+            <IconButton>
+              <MdShare />
+            </IconButton>
+          )}
           {environment.features.favorites &&
             (isFavorite ? (
-              <MdTurnedIn onClick={toggleFav('remove', project.id)} />
+              <IconButton>
+                <MdTurnedIn onClick={toggleFav('remove', project.id)} />
+              </IconButton>
             ) : (
-              <MdTurnedInNot onClick={toggleFav('add', project.id)} />
+              <IconButton>
+                <MdTurnedInNot onClick={toggleFav('add', project.id)} />
+              </IconButton>
             ))}
+          {isMyList && <ContextMenu project={project} />}
         </ProjectActions>
         <Description>{project.description}</Description>
         {project.tags && project.tags.length > 0 && (
           <TagGroup>
-            {project.tags.map(tag => (
-              <Tag key={tag} text={tag} color="standard" />
+            {project.tags.map((tag, index) => (
+              <Tag key={`${tag}-${index}`} text={tag} color="standard" />
             ))}
           </TagGroup>
         )}

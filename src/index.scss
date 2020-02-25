@@ -11,6 +11,8 @@ body {
 html {
   overflow-anchor: none;
   overflow-y: auto !important;
+
+  --bg-color: white;
   --color-gray: rgb(56, 56, 56);
   --color-gray__dark: rgb(36, 36, 36);
   --color-gray__light: rgb(64, 64, 64);
@@ -32,7 +34,7 @@ html {
 
   height: 100%;
   width: 100%;
-  background-color: white;
+  background-color: var(--bg-color);
 }
 
 #root {
