@@ -1,6 +1,6 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { createLogger } from 'redux-logger';
-import { ApolloClient } from '@apollo/client';
+import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import { createEpicMiddleware, combineEpics } from 'redux-observable';
 
 import { environment } from '@environment/environment';
@@ -43,7 +43,7 @@ if (environment.env === 'dev') {
 }
 
 /** Epic middleware */
-const epicMiddleware = createEpicMiddleware<any, any, AppState, { apollo: ApolloClient<any> }>({
+const epicMiddleware = createEpicMiddleware<any, any, AppState, { apollo: ApolloClient<NormalizedCacheObject> }>({
   dependencies: { apollo: client }
 });
 const rootEpic = combineEpics(authEpic, logoutEpic, initEpic);

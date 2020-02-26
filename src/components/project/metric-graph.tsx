@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+import React from 'react';
+import { LineChart, Line, XAxis, Tooltip } from 'recharts';
 
 interface LineGraphInterface {
   data: { x: any; [y: string]: number }[];

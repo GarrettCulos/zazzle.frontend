@@ -13,7 +13,8 @@ import * as serviceWorker from './serviceWorker';
 
 const rootElement = document.getElementById('root');
 const AppRoot = () => (
-  <ApolloHocProvider client={client}>
+  // this HocProvider needs to be removed. HACK to get the CRA to compile
+  <ApolloHocProvider client={client as any}>
     <ApolloProvider client={client}>
       <Provider store={store}>
         <App />
