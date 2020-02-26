@@ -1,11 +1,10 @@
 import { ofType } from 'redux-observable';
 import { switchMap, withLatestFrom } from 'rxjs/operators';
-import { ApolloClient } from 'apollo-boost';
+import { gql, ApolloClient } from '@apollo/client';
 import { Observable } from 'rxjs';
 import { getJwtToken } from '@store/auth/auth.selectors';
 import { logout } from '@store/auth/auth.actions';
 import { setUser } from '@store/user/user.actions';
-import gql from 'graphql-tag';
 
 const GET_CURRENT_USER = gql`
   query currentUser {

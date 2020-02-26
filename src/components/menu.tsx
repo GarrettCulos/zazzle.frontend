@@ -59,11 +59,7 @@ export const SideMenu: React.FC = () => {
 
   return (
     <SideMenuContainer sideNavState={sideNavState}>
-      {user && (
-        <SideMenuHeader>
-          <Avatar src={user.userIcon} />
-        </SideMenuHeader>
-      )}
+      {user && <SideMenuHeader>{user.userIcon && <Avatar src={user.userIcon} />}</SideMenuHeader>}
       <SideMenuHeader>
         {/* <SideNavToggle sideNavState={sideNavState} onClick={toggleSideNav} /> */}
         {/* <TempLogo style={{ color: 'var(--color-primary__dark)' }} /> */}

@@ -7,8 +7,7 @@ import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props
 import { environment } from '@environment/environment';
 import { setAuth } from '@store/auth/auth.actions';
 import { setUser } from '@store/user/user.actions';
-import { useMutation } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
+import { gql, useMutation } from '@apollo/client';
 
 import { LoginButton } from './login-button-styled';
 import { LoginButtonInterface } from './social-login';

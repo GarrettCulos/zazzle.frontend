@@ -1,8 +1,7 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
-import { useMutation } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
+import { gql, useMutation } from '@apollo/client';
 
 import ContextMenu from '../context-menu/context-menu';
 import IconButton from '../atomic/icon-button';
@@ -28,7 +27,7 @@ import { FaUserCircle } from 'react-icons/fa';
 import { MdTurnedInNot, MdTurnedIn, MdShare } from 'react-icons/md';
 import Avatar from '@atlaskit/avatar';
 import Tag from '@atlaskit/tag';
-
+import { LineGraph } from './metric-graph';
 const CHANGE_FAVORITES = gql`
   mutation changeFavorites($mode: String!, $projectId: String!) {
     changeFavorites(mode: $mode, projectId: $projectId)
@@ -58,6 +57,26 @@ const ProjectTileFC: React.FC<ContainerInterface> = ({ project }: ContainerInter
     },
     [changeFavorites, dispatch]
   );
+
+  const [graphValues, yKeys] = useMemo(() => {
+    const yy: { name: string; color: string }[] = [];
+    const xx = project.metrics
+      ? project.metrics.reduce((data, metric) => {
+          const key = new Date(metric.date).getTime();
+          if (!yy.some(y => y.name === metric.key)) {
+            yy.push({ name: metric.key, color: '#82ca9d' });
+          }
+          if (data[key]) {
+            data[key] = { ...data[key], [metric.key]: parseFloat(metric.value) };
+          } else {
+            data[key] = { name: moment(metric.date).format('L'), [metric.key]: parseFloat(metric.value) };
+          }
+          return data;
+        }, {})
+      : {};
+    return [xx, yy];
+  }, [project]);
+
   return (
     <ProjectTileContainer>
       <ProjectFlex column>
@@ -72,6 +91,14 @@ const ProjectTileFC: React.FC<ContainerInterface> = ({ project }: ContainerInter
           <ProjectFlex>
             <div style={{ height: '300px', width: '100%', background: 'rgb(64, 64, 221)' }}>{project.coverImages}</div>
           </ProjectFlex>
+        )}
+        {project.metrics && project.metrics.length > 0 && (
+          <LineGraph
+            width={550}
+            height={200}
+            data={Object.keys(graphValues).map(key => graphValues[key])}
+            yKeys={yKeys}
+          />
         )}
         <ProjectActions>
           #{project.projectType}

@@ -1,7 +1,6 @@
 import React, { useCallback, useRef, useEffect, useState } from 'react';
 import useResize from '@hooks/onResize';
-import { useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
+import { gql, useQuery } from '@apollo/client';
 import ProjectTile from '../project/project-tile';
 import { LoadMore, PageContainer, LoadingContainer } from './home-styled';
 import {
@@ -35,6 +34,11 @@ const GET_PROJECTS = gql`
         followCount
         updatedAt
         createdAt
+        metrics {
+          value
+          date
+          key
+        }
         metricTemplates {
           key
           name

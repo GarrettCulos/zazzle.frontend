@@ -1,6 +1,6 @@
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { createLogger } from 'redux-logger';
-import { ApolloClient } from 'apollo-boost';
+import { ApolloClient } from '@apollo/client';
 import { createEpicMiddleware, combineEpics } from 'redux-observable';
 
 import { environment } from '@environment/environment';
@@ -11,7 +11,7 @@ import { authEpic, logoutEpic } from './auth/auth.epic';
 import initEpic from './init/init.effect';
 import { auth, AuthState } from './auth/auth.reducer';
 
-import client from '@gql';
+import { client } from '@gql';
 
 /**
  * App State type

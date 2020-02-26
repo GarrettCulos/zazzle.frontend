@@ -3,8 +3,7 @@ import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { GoogleLogin } from 'react-google-login';
 import { FaGoogle } from 'react-icons/fa';
-import { useMutation } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
+import { gql, useMutation } from '@apollo/client';
 
 import { LoginButtonInterface } from './social-login';
 import { environment } from '@environment/environment';

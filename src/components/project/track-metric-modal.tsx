@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { gql } from '@apollo/client';
 import { graphql } from '@apollo/react-hoc';
 
 import Button from '@atlaskit/button';
@@ -7,8 +8,6 @@ import ModalDialog, { ModalFooter, ModalTransition } from '@atlaskit/modal-dialo
 import Form, { Field, ErrorMessage } from '@atlaskit/form';
 import Textfield from '@atlaskit/textfield';
 import { DatePicker } from '@atlaskit/datetime-picker';
-
-import gql from 'graphql-tag';
 
 const inputProps = { autoComplete: 'off' };
 const ADD_METRIC = gql`
@@ -46,7 +45,6 @@ class AddMetricModal extends React.Component<AddMetricInterface> {
         return;
       }
       this.setState({ isDisabled: true });
-      console.log([{ value, date, key: metricTemplate.key }]);
       await addMetric({
         variables: {
           projectId: projectId,

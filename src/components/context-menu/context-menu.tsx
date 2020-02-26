@@ -3,6 +3,7 @@ import { PopupMenuGroup, HeadingItem, Section, ButtonItem } from '@atlaskit/menu
 import { MdMoreHoriz, MdDataUsage, MdSettings, MdDelete } from 'react-icons/md';
 import OutsideClickHandler from 'react-outside-click-handler';
 import { AddMetric } from '../project/track-metric-modal';
+import { RemoveProject } from '../project/delete-project-modal';
 
 import IconButton from '../atomic/icon-button';
 
@@ -14,6 +15,7 @@ const ContextMenu: React.FC<ContextMenuInterface> = (props: ContextMenuInterface
   const [isOpen, setOpenState] = useState(false);
   const [addMetricModalState, setAddMetricModalState] = useState(false);
   const [currentMetricTemplate, setMetricTemplate] = useState({});
+  const [confirmationDialogOpen, setConfirmationDialogOpenState] = useState(false);
 
   const openAddMetricModalState = useCallback(
     metricTemplate => {
@@ -55,8 +57,12 @@ const ContextMenu: React.FC<ContextMenuInterface> = (props: ContextMenuInterface
                   ))}
                 </Section>
                 <Section hasSeparator>
-                  <ButtonItem elemBefore={<MdSettings />}>Edit Project</ButtonItem>
-                  <ButtonItem elemBefore={<MdDelete />}>Delete Project</ButtonItem>
+                  <ButtonItem isDisabled elemBefore={<MdSettings />}>
+                    Edit Project
+                  </ButtonItem>
+                  <ButtonItem onClick={() => setConfirmationDialogOpenState(true)} elemBefore={<MdDelete />}>
+                    Delete Project
+                  </ButtonItem>
                 </Section>
               </PopupMenuGroup>
             </MenuPositioner>
@@ -69,6 +75,13 @@ const ContextMenu: React.FC<ContextMenuInterface> = (props: ContextMenuInterface
           toggleModal={() => setAddMetricModalState(false)}
           metricTemplate={currentMetricTemplate}
           isOpen={addMetricModalState}
+        />
+      )}
+      {confirmationDialogOpen && (
+        <RemoveProject
+          projectId={props.project.id}
+          toggleModal={() => setConfirmationDialogOpenState(false)}
+          isOpen={confirmationDialogOpen}
         />
       )}
     </>

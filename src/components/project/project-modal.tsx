@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { graphql } from '@apollo/react-hoc';
+import { gql } from '@apollo/client';
 import { MdAdd } from 'react-icons/md';
 import moment from 'moment';
 
@@ -23,8 +24,6 @@ import { InputButton } from '../atomic/input-button';
 import { isProjectCreationOpen } from '@store/ui/ui.selectors';
 import { toggleProjectCreationModal } from '@store/ui/ui.actions';
 import { ProjectTypes } from '@environment/constants';
-
-import gql from 'graphql-tag';
 
 const inputProps = { autoComplete: 'off' };
 const ADD_PROJECT = gql`
