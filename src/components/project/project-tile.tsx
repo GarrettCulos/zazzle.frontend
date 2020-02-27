@@ -67,7 +67,7 @@ const ProjectTileFC: React.FC<ContainerInterface> = ({ project }: ContainerInter
             yy.push({ name: metric.key, color: '#82ca9d' });
           }
           if (data[key]) {
-            data[key] = { ...data[key], [metric.key]: parseFloat(metric.value) };
+            data[key] = { ...data[key], [key]: parseFloat(metric.value) };
           } else {
             data[key] = { name: moment(metric.date).format('L'), [metric.key]: parseFloat(metric.value) };
           }

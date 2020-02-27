@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { MdFolder, MdStarBorder, MdCreateNewFolder, MdLocalActivity } from 'react-icons/md';
+import { MdFolder, MdStarBorder, MdCreateNewFolder } from 'react-icons/md';
 // import { IoIosFlask as TempLogo } from 'react-icons/io';
 
 import { GoogleLoginComponent } from './menu/google-login';
@@ -85,12 +85,12 @@ export const SideMenu: React.FC = () => {
           <MdStarBorder /> <span>Favorites</span>
         </SideMenuRow>
       )}
+      {user && <MenuDivider />}
       {environment.features.myProjects && user && (
         <SideMenuRow vertical={isClosed}>
-          <MdLocalActivity /> <span>My Projects</span>
+          <span>My Projects</span>
         </SideMenuRow>
       )}
-      {user && <MenuDivider />}
       {user && (
         <SideMenuRow vertical={isClosed} onClick={openCreateProject}>
           <MdCreateNewFolder /> <span>Add Project</span>

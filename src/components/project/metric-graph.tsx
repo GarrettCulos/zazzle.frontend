@@ -1,5 +1,12 @@
-import React from 'react';
-import { LineChart, Line, XAxis, Tooltip } from 'recharts';
+import React, { useRef, useMemo } from 'react';
+import styled from 'styled-components';
+import { LineChart, Line, Tooltip } from 'recharts';
+
+const LineChartContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  border-bottom: 1px solid var(--border-color);
+`;
 
 interface LineGraphInterface {
   data: { x: any; [y: string]: number }[];
@@ -8,29 +15,38 @@ interface LineGraphInterface {
   height: number;
 }
 
-export const LineGraph: React.FC<LineGraphInterface> = ({ data, width, height, yKeys }: LineGraphInterface) => {
+export const LineGraph: React.FC<LineGraphInterface> = ({ data, yKeys }: LineGraphInterface) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [fullWidth, fullHeight]: [number, number] = useMemo(() => {
+    if (ref && ref.current) {
+      const { clientWidth, clientHeight } = ref.current;
+      return [clientWidth, clientHeight];
+    }
+    return [550, 200];
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ref.current]);
+
   return (
-    <div style={{ width: '100%', height: '100%' }}>
+    <LineChartContainer ref={ref}>
       <LineChart
-        width={width}
-        height={height}
+        width={fullWidth}
+        height={fullHeight}
         data={data}
         margin={{
           top: 5,
-          right: 30,
-          left: 20,
+          right: 5,
+          left: 5,
           bottom: 5
         }}
       >
-        {/* <CartesianGrid strokeDasharray="3 3" /> */}
-        <XAxis dataKey="name" />
+        {/* <XAxis dataKey="name" /> */}
+        {/* <XAxis dataKey="name" /> */}
         {/* <YAxis /> */}
         <Tooltip />
-        {/* <Legend /> */}
         {yKeys.map(key => (
           <Line type="monotone" key={key.name} dataKey={key.name} stroke={key.color} />
         ))}
       </LineChart>
-    </div>
+    </LineChartContainer>
   );
 };
