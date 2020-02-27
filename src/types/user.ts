@@ -5,7 +5,7 @@ export interface User {
   createdAt?: Date;
   updatedAt?: Date;
   favorites: { projectId: string }[];
-  myProjects: string[];
+  myProjects: any[];
   metadata?: {
     [s: string]: any;
   };

@@ -13,7 +13,12 @@ const GET_CURRENT_USER = gql`
       id
       userIcon
       userName
-      myProjects
+      myProjects {
+        id
+        title
+        private
+        updatedAt
+      }
       favorites {
         projectId
       }

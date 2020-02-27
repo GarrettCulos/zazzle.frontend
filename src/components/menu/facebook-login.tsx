@@ -28,7 +28,12 @@ const EXCHANGE_FACEBOOK_TOKEN = gql`
         id
         userIcon
         userName
-        myProjects
+        myProjects {
+          id
+          title
+          private
+          updatedAt
+        }
         favorites {
           projectId
         }
