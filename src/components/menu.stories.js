@@ -2,7 +2,7 @@ import React from 'react';
 import { SideMenu } from './menu';
 
 export default {
-  title: 'SideMenu',
+  title: 'SideMenu'
 };
 
 export const text = () => <SideMenu />;

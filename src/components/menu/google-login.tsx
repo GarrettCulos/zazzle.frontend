@@ -26,7 +26,12 @@ const EXCHANGE_GOOGLE_TOKEN = gql`
         id
         userIcon
         userName
-        myProjects
+        myProjects {
+          id
+          title
+          private
+          updatedAt
+        }
         favorites {
           projectId
         }

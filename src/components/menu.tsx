@@ -2,7 +2,6 @@ import React, { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { MdFolder, MdStarBorder, MdCreateNewFolder } from 'react-icons/md';
-// import { IoIosFlask as TempLogo } from 'react-icons/io';
 
 import { GoogleLoginComponent } from './menu/google-login';
 import { FacebookLoginComponent } from './menu/facebook-login';
@@ -12,14 +11,17 @@ import { showLoginSection, getSideNavState } from '@store/ui/ui.selectors';
 import { toggleProjectCreationModal } from '@store/ui/ui.actions';
 
 import { AppName } from './atomic/app-name';
-// import { SideNavToggle } from './atomic/side-nav-toggle';
+import { ProjectIcon } from './menu/project-icon';
+
 import {
   SideMenuContainer,
   SideMenuHeader,
   SideMenuSpacer,
+  SideMenuRowTitle,
   MenuDivider,
   LoginComponent,
-  SideMenuRow,
+  SideMenuRowLink,
+  ProjectRow,
   SmallContinueWith
 } from './menu/menu-styles';
 import Avatar from '@atlaskit/avatar';
@@ -38,7 +40,7 @@ export const SideMenu: React.FC = () => {
   const showLogin = useSelector(showLoginSection);
 
   /**
-   * sidenav state && toggle
+   * side nav state && toggle
    */
   const sideNavState = useSelector(getSideNavState);
   const isClosed = sideNavState === 'closed';
@@ -77,24 +79,30 @@ export const SideMenu: React.FC = () => {
           <MenuDivider />
         </>
       )}
-      <SideMenuRow active={true} vertical={isClosed}>
+      <SideMenuRowLink active={true} vertical={isClosed}>
         <MdFolder /> <span>Projects</span>
-      </SideMenuRow>
+      </SideMenuRowLink>
       {environment.features.favorites && user && (
-        <SideMenuRow vertical={isClosed}>
+        <SideMenuRowLink vertical={isClosed}>
           <MdStarBorder /> <span>Favorites</span>
-        </SideMenuRow>
+        </SideMenuRowLink>
       )}
       {user && <MenuDivider />}
       {environment.features.myProjects && user && (
-        <SideMenuRow vertical={isClosed}>
-          <span>My Projects</span>
-        </SideMenuRow>
+        <>
+          <SideMenuRowTitle>My Projects</SideMenuRowTitle>
+          {user.myProjects.map(project => (
+            <ProjectRow key={project.id} title={project.title}>
+              <ProjectIcon isPrivate={project.private} />
+              <span>{project.title}</span>
+            </ProjectRow>
+          ))}
+        </>
       )}
       {user && (
-        <SideMenuRow vertical={isClosed} onClick={openCreateProject}>
-          <MdCreateNewFolder /> <span>Add Project</span>
-        </SideMenuRow>
+        <ProjectRow onClick={openCreateProject}>
+          <MdCreateNewFolder /> <span>Add</span>
+        </ProjectRow>
       )}
       <SideMenuSpacer />
     </SideMenuContainer>

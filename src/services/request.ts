@@ -40,14 +40,14 @@ class RequestLib {
     const method = req.method || 'GET';
     const headers = this.joinHeaders([
       new Headers(req.headers ? req.headers : []),
-      this._config.headers || new Headers(),
+      this._config.headers || new Headers()
     ]);
     return axios.request({
       ...req,
       url,
       method,
       headers,
-      withCredentials: true,
+      withCredentials: true
     });
   }
 }
@@ -56,6 +56,6 @@ export default new RequestLib({
   baseUrl: 'https://localhost:8000',
   headers: new Headers([
     // ['Access-Control-Allow-Origin', '*'],
-    ['Content-Type', 'application/json'],
-  ]),
+    ['Content-Type', 'application/json']
+  ])
 });

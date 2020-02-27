@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 export const sideMenuWidthSwitch = mode => {
   switch (mode) {
     case 'closed':
-      return '106px';
+      return '112px';
     case 'extended':
       return '500px';
     case 'open':
@@ -54,8 +54,6 @@ interface SideMenuRowInterface {
 const VerticalMenuText = css`
   margin-top: 4px;
   margin-bottom: 4px;
-  font-size: 11px;
-  font-weight: 600;
   text-transform: uppercase;
   text-align: center;
   width: 100%;
@@ -64,23 +62,78 @@ const VerticalMenuText = css`
 export const SmallContinueWith = styled.div`
   ${VerticalMenuText}
   margin-top:0;
+  font-size: 11px;
+  font-weight: 600;
 `;
-export const SideMenuRow = styled.div<SideMenuRowInterface>`
+
+export const SideMenuRowTitle = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+
+  color: inherit;
+  padding: 0 1rem 1rem 1rem;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+`;
+
+export const ProjectRow = styled.div<SideMenuRowInterface>`
   cursor: pointer;
   display: flex;
-  flex-direction: ${({ vertical }) => (vertical ? 'column' : 'row')};
   align-items: center;
   box-sizing: border-box;
-  padding: 1rem;
+  padding: 10px 1rem;
+  padding-left: calc(1rem + 8px);
   width: 100%;
   color: ${({ active }) => (active ? 'var(--color-primary__dark)' : 'inherit')};
   :hover {
     color: var(--color-primary__dark);
   }
   span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-left: 8px;
+  }
+  svg {
+    min-width: 24px;
+  }
+`;
+
+export const SideMenuRow = styled.div<SideMenuRowInterface>`
+  cursor: pointer;
+  display: flex;
+  flex-direction: ${({ vertical }) => (vertical ? 'column' : 'row')};
+  align-items: center;
+  box-sizing: border-box;
+  padding: 10px 1rem;
+  width: 100%;
+  color: ${({ active }) => (active ? 'var(--color-primary__dark)' : 'inherit')};
+  :hover {
+    color: var(--color-primary__dark);
+  }
+  span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
     margin-left: ${({ vertical }) => (vertical ? '0' : '8px')};
     ${({ vertical }) => (vertical ? VerticalMenuText : '')}
   }
+  svg {
+    min-width: 24px;
+  }
+`;
+
+export const SideMenuRowLink = styled(SideMenuRow)`
   svg {
     margin-left: ${({ vertical }) => (vertical ? '0' : '24px')};
   }
