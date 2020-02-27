@@ -17,7 +17,7 @@ export const projectIsMine = createSelector(
   (_, projectId) => projectId,
   (user, projectId) => {
     if (user && user.favorites) {
-      return user.myProjects.includes(projectId);
+      return user.myProjects.some((project: any) => project.id === projectId);
     }
     return false;
   }
