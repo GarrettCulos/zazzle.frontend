@@ -19,7 +19,6 @@ import TextArea from '@atlaskit/textarea';
 import Select from '@atlaskit/select';
 import { InputButton } from '../atomic/input-button';
 // editor breaks build ???
-import { Editor } from '@atlaskit/editor-core';
 
 import { isProjectCreationOpen } from '@store/ui/ui.selectors';
 import { toggleProjectCreationModal } from '@store/ui/ui.actions';
@@ -207,7 +206,7 @@ class ProjectModalBase extends React.Component<ProjectModalBaseInterface> {
                     }}
                   </Field>
 
-                  <Editor appearance="comment" />
+                  {/* <Editor appearance="comment" /> */}
                   {/* coverImages */}
                   {/* tags */}
                   <Field label="Tags" name="tag" defaultValue="">
