@@ -11,7 +11,7 @@
     "@atlaskit/checkbox": "^10.1.5",
     "@atlaskit/datetime-picker": "^9.2.3",
     "@atlaskit/dropdown-menu": "^8.2.4",
-    "@atlaskit/editor-core": "^116.2.1",
+    "@atlaskit/editor-core": "^118.0.0",
     "@atlaskit/form": "^7.1.0",
     "@atlaskit/menu": "^0.2.6",
     "@atlaskit/modal-dialog": "^10.5.0",
@@ -41,7 +41,7 @@
     "redux-toolkit": "^1.1.2",
     "reselect": "^4.0.0",
     "rxjs": "^6.5.4",
-    "styled-components": "^4.4.1",
+    "styled-components": "^3.2.6",
     "uuid": "^3.4.0"
   },
   "scripts": {
@@ -104,7 +104,7 @@
     "prettier": "^1.19.1",
     "pretty-quick": "^2.0.1",
     "react-app-rewired": "^2.1.5",
-    "storybook": "^5.3.9",
+    "storybook": "^5.3.14",
     "typescript": "~3.7.2"
   },
   "jest": {
