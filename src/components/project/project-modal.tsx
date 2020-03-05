@@ -15,14 +15,19 @@ import { Checkbox } from '@atlaskit/checkbox';
 import Textfield from '@atlaskit/textfield';
 import { DatePicker } from '@atlaskit/datetime-picker';
 import Tag from '@atlaskit/tag';
-import TextArea from '@atlaskit/textarea';
 import Select from '@atlaskit/select';
 import { InputButton } from '../atomic/input-button';
 // editor breaks build ???
+// import { Editor } from '@atlaskit/editor-core';
 
 import { isProjectCreationOpen } from '@store/ui/ui.selectors';
 import { toggleProjectCreationModal } from '@store/ui/ui.actions';
 import { ProjectTypes } from '@environment/constants';
+
+import Wyzi from '../atomic/wysiwyg';
+const MyEditor = () => {
+  return <Wyzi />;
+};
 
 const inputProps = { autoComplete: 'off' };
 const ADD_PROJECT = gql`
@@ -135,6 +140,8 @@ class ProjectModalBase extends React.Component<ProjectModalBaseInterface> {
     }));
   };
 
+  setEditorState = editorState => this.setState({ editorState });
+
   render() {
     const { projectTags, isDisabled, metricTemplates, error } = this.state;
     const { isOpen } = this.props;
@@ -191,22 +198,22 @@ class ProjectModalBase extends React.Component<ProjectModalBaseInterface> {
                   <Field label="Description" name="description" isRequired>
                     {({ fieldProps }) => {
                       return (
-                        <TextArea
-                          {...inputProps}
-                          isDisabled={fieldProps.isDisabled}
-                          isRequired={fieldProps.isRequired}
-                          name={fieldProps.name}
-                          onBlur={fieldProps.onBlur}
-                          onFocus={fieldProps.onFocus}
-                          onChange={event => {
-                            fieldProps.onChange(event.target ? event.target.value : '');
-                          }}
-                        />
+                        <MyEditor />
+                        // <TextArea
+                        //   {...inputProps}
+                        //   isDisabled={fieldProps.isDisabled}
+                        //   isRequired={fieldProps.isRequired}
+                        //   name={fieldProps.name}
+                        //   onBlur={fieldProps.onBlur}
+                        //   onFocus={fieldProps.onFocus}
+                        //   onChange={event => {
+                        //     fieldProps.onChange(event.target ? event.target.value : '');
+                        //   }}
+                        // />
                       );
                     }}
                   </Field>
 
-                  {/* <Editor appearance="comment" /> */}
                   {/* coverImages */}
                   {/* tags */}
                   <Field label="Tags" name="tag" defaultValue="">
