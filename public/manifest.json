@@ -1,0 +1,25 @@
+{
+  "short_name": "Zazzle",
+  "name": "Zazzle",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "52x52 32x32 13x13",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "logo-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "logo-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#ffe5b4",
+  "background_color": "#383838"
+}
