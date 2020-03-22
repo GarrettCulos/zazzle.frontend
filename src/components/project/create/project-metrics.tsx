@@ -86,7 +86,7 @@ export const ProjectMetricForm: React.FC<ProjectMetricFormInterface> = ({
     <ThemeProvider theme={theme}>
       <FlexForm noValidate autoComplete="off">
         <p>Gain insight into how your project is going by tracking key metrics.</p>
-        {metricTemplates.map((template, index) => (
+        {metricTemplates.map(template => (
           <FormRow key={template.key}>
             <TextField
               style={{ flex: 1, marginRight: '10px' }}
