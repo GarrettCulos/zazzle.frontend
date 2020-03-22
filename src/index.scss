@@ -2,8 +2,8 @@ body {
   height: 100%;
   width: 100%;
   margin: 0;
-  font-family: 'Work Sans', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-size: var(--font-size);
+  font-family: var(--font-family);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -12,6 +12,9 @@ html {
   overflow-anchor: none;
   overflow-y: auto !important;
 
+  --font-family: 'Raleway', 'roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  --font-size: 13px;
   --bg-color: white;
   --color-gray: rgb(56, 56, 56);
   --color-gray__dark: rgb(36, 36, 36);
@@ -24,14 +27,16 @@ html {
   --color-secondary: #1eb980;
   --color-secondary__dark: #045d56;
   --color-error: #b00020;
-  --border-color: rgba(0, 0, 0, 0.2);
-  --font-color: rgba(0, 0, 0, 0.8);
+  --border-color: rgba(0, 0, 0, 0.21);
+  --font-color: rgba(0, 0, 0, 0.84);
   --font-color--hover: rgba(0, 0, 0, 0.6);
   --font-color__dark: rgba(255, 255, 255, 0.8);
   --default-transition: 0.125s all ease-in-out;
   --facebook-blue: #3b5998;
 
   --form-border-radius: 8px;
+  --button-border: rgba(0, 0, 0, 0.21);
+  --button-border__hover: rgba(0, 0, 0, 0.42);
 
   height: 100%;
   width: 100%;

@@ -41,8 +41,8 @@ const App: React.FC = () => {
           <Container navClosed={isClosed}>
             <Home />
           </Container>
-          <ProjectModal />
         </AppContainer>
+        <ProjectModal />
       </IconContext.Provider>
     </ThemeProvider>
   );

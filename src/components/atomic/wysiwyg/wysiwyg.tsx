@@ -1,9 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import styled from 'styled-components';
 import isHotkey from 'is-hotkey';
 import { Editable, withReact, useSlate, ReactEditor, Slate } from 'slate-react';
 import { Editor, Transforms, createEditor } from 'slate';
 import { withHistory } from 'slate-history';
+import { HOTKEYS, LIST_TYPES } from './constants';
+import { WizyWrapper, WizyInputWrapper, Toolbar, Button } from './styled-components';
+import { Element, Leaf } from './slate-functions';
 import {
   MdFormatBold,
   MdFormatItalic,
@@ -16,45 +18,12 @@ import {
   MdFormatListBulleted
 } from 'react-icons/md';
 
-const WizyWrapper = styled.div`
-  border: 1px solid var(--border-color);
-  border-radius: var(--form-border-radius);
-`;
-
-const Toolbar = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-interface ButtonInterface {
-  active?: boolean;
-  disabled?: boolean;
-}
-const Button = styled.div<ButtonInterface>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 30px;
-  width: 30px;
-  opacity: ${({ active }) => (active ? 1 : 0.5)};
-  cursor: ${({ disabled }) => (disabled ? 'cursor' : 'pointer')};
-`;
-
 const initialValue = [
   {
     type: 'paragraph',
     children: [{ text: '' }]
   }
 ];
-
-const HOTKEYS = {
-  'mod+b': 'bold',
-  'mod+i': 'italic',
-  'mod+u': 'underline',
-  'mod+`': 'code'
-};
-
-const LIST_TYPES = ['numbered-list', 'bulleted-list'];
 
 const isBlockActive = (editor, format) => {
   const res: any = Editor.nodes(editor, {
@@ -123,45 +92,6 @@ const toggleBlock = (editor: ReactEditor, format) => {
   }
 };
 
-const Element = ({ attributes, children, element }: any) => {
-  switch (element.type) {
-    case 'block-quote':
-      return <blockquote {...attributes}>{children}</blockquote>;
-    case 'bulleted-list':
-      return <ul {...attributes}>{children}</ul>;
-    case 'heading-one':
-      return <h1 {...attributes}>{children}</h1>;
-    case 'heading-two':
-      return <h2 {...attributes}>{children}</h2>;
-    case 'list-item':
-      return <li {...attributes}>{children}</li>;
-    case 'numbered-list':
-      return <ol {...attributes}>{children}</ol>;
-    default:
-      return <p {...attributes}>{children}</p>;
-  }
-};
-
-const Leaf = ({ attributes, children, leaf }: any) => {
-  if (leaf.bold) {
-    children = <strong>{children}</strong>;
-  }
-
-  if (leaf.code) {
-    children = <code>{children}</code>;
-  }
-
-  if (leaf.italic) {
-    children = <em>{children}</em>;
-  }
-
-  if (leaf.underline) {
-    children = <u>{children}</u>;
-  }
-
-  return <span {...attributes}>{children}</span>;
-};
-
 const BlockButton = ({ format, icon }: any) => {
   const editor = useSlate();
   const active = useMemo(() => isBlockActive(editor, format), [editor, format]);
@@ -196,8 +126,10 @@ const MarkButton = ({ format, icon }: any) => {
 interface RichTextExampleInterface {
   onChange?: Function;
   placeholder?: string;
+  integrated?: boolean;
+  minHeight?: string;
 }
-const RichTextExample = ({ onChange, placeholder = 'Enter Text' }: RichTextExampleInterface) => {
+const RichTextExample = ({ onChange, minHeight, integrated, placeholder = 'Enter Text' }: RichTextExampleInterface) => {
   const [value, setValue] = useState(initialValue);
   const renderElement = useCallback(props => <Element {...props} />, []);
   const renderLeaf = useCallback(props => <Leaf {...props} />, []);
@@ -209,7 +141,7 @@ const RichTextExample = ({ onChange, placeholder = 'Enter Text' }: RichTextExamp
   }, [onChange, value]);
 
   return (
-    <WizyWrapper>
+    <WizyWrapper integrated={integrated}>
       <Slate editor={editor} value={value} onChange={(value: any) => setValue(value)}>
         <Toolbar>
           <MarkButton format="bold" icon="format_bold" />
@@ -222,22 +154,25 @@ const RichTextExample = ({ onChange, placeholder = 'Enter Text' }: RichTextExamp
           <BlockButton format="numbered-list" icon="format_list_numbered" />
           <BlockButton format="bulleted-list" icon="format_list_bulleted" />
         </Toolbar>
-        <Editable
-          renderElement={renderElement}
-          renderLeaf={renderLeaf}
-          placeholder={placeholder}
-          spellCheck
-          autoFocus
-          onKeyDown={(event: any) => {
-            for (const hotkey in HOTKEYS) {
-              if (isHotkey(hotkey, event)) {
-                event.preventDefault();
-                const mark = HOTKEYS[hotkey];
-                toggleMark(editor, mark);
+        <WizyInputWrapper>
+          <Editable
+            style={{ minHeight }}
+            renderElement={renderElement}
+            renderLeaf={renderLeaf}
+            placeholder={placeholder}
+            spellCheck
+            autoFocus
+            onKeyDown={(event: any) => {
+              for (const hotkey in HOTKEYS) {
+                if (isHotkey(hotkey, event)) {
+                  event.preventDefault();
+                  const mark = HOTKEYS[hotkey];
+                  toggleMark(editor, mark);
+                }
               }
-            }
-          }}
-        />
+            }}
+          />
+        </WizyInputWrapper>
       </Slate>
     </WizyWrapper>
   );

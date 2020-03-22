@@ -4,10 +4,10 @@ import { gql } from '@apollo/client';
 import { graphql } from '@apollo/react-hoc';
 
 import Button from '@atlaskit/button';
-import ModalDialog, { ModalFooter, ModalTransition } from '@atlaskit/modal-dialog';
-import Form, { Field, ErrorMessage } from '@atlaskit/form';
-import Textfield from '@atlaskit/textfield';
-import { DatePicker } from '@atlaskit/datetime-picker';
+// import ModalDialog, { ModalFooter, ModalTransition } from '@atlaskit/modal-dialog';
+// import Form, { Field, ErrorMessage } from '@atlaskit/form';
+// import Textfield from '@atlaskit/textfield';
+// import { DatePicker } from '@atlaskit/datetime-picker';
 
 const inputProps = { autoComplete: 'off' };
 const ADD_METRIC = gql`
@@ -64,53 +64,52 @@ class AddMetricModal extends React.Component<AddMetricInterface> {
     const { isDisabled, error } = this.state;
     const { isOpen, metricTemplate } = this.props;
     return (
-      <ModalTransition>
-        {isOpen && (
-          <ModalDialog
-            shouldCloseOnOverlayClick={false}
-            heading={`Add Data for ${metricTemplate.name}`}
-            onClose={this.onClose}
-          >
-            <Form isDisabled={isDisabled} onSubmit={this.onFormSubmit}>
-              {({ formProps }) => (
-                <form {...formProps}>
-                  {error && <ErrorMessage>An error has happened. poop.</ErrorMessage>}
-                  {/* value */}
+      <div></div>
+      // <ModalTransition>
+      //   {isOpen && (
+      //     <ModalDialog
+      //       shouldCloseOnOverlayClick={false}
+      //       heading={`Add Data for ${metricTemplate.name}`}
+      //       onClose={this.onClose}
+      //     >
+      //       <Form isDisabled={isDisabled} onSubmit={this.onFormSubmit}>
+      //         {({ formProps }) => (
+      //           <form {...formProps}>
+      //             {error && <ErrorMessage>An error has happened. poop.</ErrorMessage>}
 
-                  {metricTemplate.type === 'date' ? (
-                    <Field label="Value" name="value" isRequired>
-                      {({ fieldProps }) => <DatePicker {...fieldProps} />}
-                    </Field>
-                  ) : (
-                    <Field label="Value" name="value" isRequired>
-                      {({ fieldProps }) => (
-                        <Textfield
-                          {...inputProps}
-                          {...fieldProps}
-                          onChange={value => {
-                            fieldProps.onChange((value.target as any).value);
-                          }}
-                        />
-                      )}
-                    </Field>
-                  )}
-                  {/* date */}
-                  <Field label="Start Date" name="date" defaultValue={new Date().toISOString()} isRequired>
-                    {({ fieldProps }) => <DatePicker {...fieldProps} />}
-                  </Field>
-                  <ModalFooter>
-                    <Button onClick={this.onClose}>Cancel</Button>
-                    <span />
-                    <Button appearance="primary" type="submit">
-                      Add
-                    </Button>
-                  </ModalFooter>
-                </form>
-              )}
-            </Form>
-          </ModalDialog>
-        )}
-      </ModalTransition>
+      //             {metricTemplate.type === 'date' ? (
+      //               <Field label="Value" name="value" isRequired>
+      //                 {({ fieldProps }) => <DatePicker {...fieldProps} />}
+      //               </Field>
+      //             ) : (
+      //               <Field label="Value" name="value" isRequired>
+      //                 {({ fieldProps }) => (
+      //                   <Textfield
+      //                     {...inputProps}
+      //                     {...fieldProps}
+      //                     onChange={value => {
+      //                       fieldProps.onChange((value.target as any).value);
+      //                     }}
+      //                   />
+      //                 )}
+      //               </Field>
+      //             )}
+      //             <Field label="Start Date" name="date" defaultValue={new Date().toISOString()} isRequired>
+      //               {({ fieldProps }) => <DatePicker {...fieldProps} />}
+      //             </Field>
+      //             <ModalFooter>
+      //               <Button onClick={this.onClose}>Cancel</Button>
+      //               <span />
+      //               <Button appearance="primary" type="submit">
+      //                 Add
+      //               </Button>
+      //             </ModalFooter>
+      //           </form>
+      //         )}
+      //       </Form>
+      //     </ModalDialog>
+      //   )}
+      // </ModalTransition>
     );
   }
 }
